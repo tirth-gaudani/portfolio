@@ -163,7 +163,7 @@ class AppFooter extends HTMLElement {
         this.innerHTML = `
         <footer class="text-center">
             <p class="text-sm dark:text-light/70">
-                © 2025 Designed with ❤️
+                © 2026 Designed with ❤️
             </p>
         </footer>
         `;
@@ -207,12 +207,12 @@ class AppIntro extends HTMLElement {
                     <h3 class="text-2xl font-semibold dark:text-light">Tirth Gaudani</h3>
                     <p class="mt-2 text-muted dark:text-light/70">
                         Passionate <span class="font-semibold text-dark dark:text-white">MERN Stack Developer</span>
-                        🖥️ | <span class="font-semibold text-dark dark:text-white">3.5 years</span> of
+                        🖥️ | <span class="font-semibold text-dark dark:text-white">3.7 years</span> of
                         Experiences.
                     </p>
                     <p class="mt-2 text-muted text-sm dark:text-light/70">
                         A skilled <span class="font-semibold text-dark dark:text-white">MERN Stack Developer</span>
-                        with over <span class="font-semibold text-dark dark:text-white">3.5 years</span> of
+                        with over <span class="font-semibold text-dark dark:text-white">3.7 years</span> of
                         experience in building robust web applications using <span
                                 class="font-semibold text-dark dark:text-white">Node.js, Express.js, React.js, Next.js, TypeScript, Nest.js, MySQL, and PostgreSQL.</span> Adept at creating scalable, high-performance solutions and delivering excellent
                         user experiences. Committed to continuous learning and staying up-to-date with industry
