@@ -3,13 +3,11 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-    // IMPORTANT: Change this to your GitHub Pages URL
-    // For custom domain: 'https://www.tirth-gaudani.ct.ws'
-    // For github.io: 'https://tirth-gaudani.github.io'
+    // IMPORTANT: Your custom domain
     site: 'https://www.tirth-gaudani.ct.ws',
 
-    // If NOT using a custom domain, uncomment the base path:
-    // base: '/portfolio',  // Your repo name
+    // For custom domains, we do NOT need a base path like '/portfolio'
+    // base: '', 
 
     integrations: [sitemap()],
     compressHTML: true,
