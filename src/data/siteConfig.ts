@@ -40,8 +40,8 @@ export const siteConfig = {
     },
     experience: {
         years: 3,
-        clients: 125,
-        projects: 210,
+        clients: 13,
+        projects: 13,
     },
 };
 
@@ -49,7 +49,8 @@ export const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
     { name: 'Works', href: '/portfolio' },
-    { name: 'Contact', href: '/contact' },
+    // { name: 'Contact', href: '/contact' },
+    { name: 'My Packages', href: '/packages' },
 ];
 
 export const mobileNavigation = [
@@ -57,7 +58,7 @@ export const mobileNavigation = [
     { name: 'About', href: '/about' },
     { name: 'Works', href: '/portfolio' },
     { name: 'My Packages', href: '/packages' },
-    { name: 'Contact', href: '/contact' },
+    // { name: 'Contact', href: '/contact' },
 ];
 
 export const projects = [

@@ -308,7 +308,7 @@ img {
 .gridx-main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 130px 40px 80px;
+    padding: 100px 40px 40px;
 }
 
 /* ==========================================================================
@@ -807,7 +807,7 @@ html:not(.dark) .card-signature img {
    PAGE TITLE - EXACT GRIDX (Stars touching text)
    ========================================================================== */
 .page-full {
-    padding-top: 140px;
+    padding-top: 100px;
 }
 
 .page-title {
@@ -1354,8 +1354,7 @@ html:not(.dark) .card-signature img {
    ========================================================================== */
 .gridx-footer {
     text-align: center;
-    padding: 80px 40px;
-    margin-top: 80px;
+    padding: 20px 0;
 }
 
 .footer-logo {
@@ -1500,7 +1499,7 @@ html:not(.dark) .card-signature img {
     }
 
     .gridx-main {
-        padding: 120px 30px 70px;
+        padding: 90px 30px 30px;
     }
 
     .bento-grid {
@@ -1627,7 +1626,7 @@ html:not(.dark) .card-signature img {
     }
 
     .gridx-main {
-        padding: 100px 20px 60px;
+        padding: 70px 20px 20px;
     }
 
     .bento-grid {
@@ -1728,7 +1727,7 @@ html:not(.dark) .card-signature img {
     }
 
     .gridx-main {
-        padding: 90px 16px 50px;
+        padding: 70px 16px 16px;
     }
 
     .profile-name {
