@@ -1,12 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Canonical Sitemap
 Sitemap: https://www.tirth-gaudani.ct.ws/sitemap-index.xml
 
 # Crawl-delay
 Crawl-delay: 1
-
-# Disallow admin/system paths (if any)
-Disallow: /api/
-Disallow: /_

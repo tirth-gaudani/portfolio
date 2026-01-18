@@ -1,37 +1,47 @@
 // Site Configuration - Centralized data for SEO and content
 export const siteConfig = {
     name: 'Tirth Gaudani',
-    title: 'Tirth Gaudani - Full Stack MERN Developer',
-    description: 'Professional portfolio of Tirth Gaudani, a passionate MERN Stack Developer with 3+ years of experience in React, Node.js, MongoDB, and Express.js. Based in Ahmedabad, Gujarat.',
+    title: 'Tirth Gaudani - Top Rated MERN Stack Developer in India',
+    description: 'Hire Tirth Gaudani, an expert Full Stack MERN Developer. Specializing in high-performance React, Node.js, and MongoDB web applications. Available for freelance & full-time projects in Ahmedabad, Gujarat, India.',
     url: 'https://www.tirth-gaudani.ct.ws',
     author: 'Tirth Gaudani',
     locale: 'en_US',
-    logo: 'Tirth Gaudani',
+    logo: 'GridX',
     themeColor: '#7b68ee',
     twitter: '@tirthgaudani',
+    // HIGH TRAFFIC KEYWORDS FOR INDEXING
     keywords: [
-        'MERN Stack Developer',
-        'Full Stack Developer',
-        'React Developer',
-        'Node.js Developer',
-        'Web Developer',
-        'JavaScript Developer',
         'Tirth Gaudani',
-        'Ahmedabad Developer',
-        'Gujarat Developer',
-        'NPM Package Author',
-        'MongoDB',
+        'MERN Stack Developer',
+        'Full Stack Developer India',
+        'Hire React Developer',
+        'Node.js Expert',
+        'MongoDB Specialist',
+        'Web Developer Ahmedabad',
+        'Best Freelance Web Developer',
+        'JavaScript Expert',
+        'Frontend Developer',
+        'Backend Developer',
+        'Custom Web Application Development',
+        'Responsive Website Design',
+        'NPM Package Creator',
+        'Software Engineer Gujarat',
+        'Portfolio Website',
+        'React.js',
         'Express.js',
-        'Portfolio'
+        'Next.js Developer',
+        'Top Rated Developer'
     ],
     social: {
         linkedin: 'https://linkedin.com/in/tirthgaudani',
         github: 'https://github.com/tirth-gaudani',
+        dribbble: 'https://dribbble.com',
+        twitter: 'https://twitter.com',
     },
     experience: {
         years: 3,
-        clients: 10,
-        projects: 10,
+        clients: 125,
+        projects: 210,
     },
 };
 
@@ -47,6 +57,7 @@ export const mobileNavigation = [
     { name: 'About', href: '/about' },
     { name: 'Works', href: '/portfolio' },
     { name: 'My Packages', href: '/packages' },
+    { name: 'Contact', href: '/contact' },
 ];
 
 export const projects = [
@@ -93,6 +104,27 @@ export const projects = [
         link: 'https://github.com/tirth-gaudani',
         gradient: 'linear-gradient(135deg, #e8ffe8 0%, #d0ffd0 100%)',
     },
+    {
+        title: 'SaaS Dashboard',
+        category: 'DASHBOARD DESIGN',
+        image: '/img/project-1.png',
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)',
+    },
+    {
+        title: 'Social Media App',
+        category: 'APP DEVELOPMENT',
+        image: '/img/project-2.png',
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #d0f0c0 0%, #c0e0b0 100%)',
+    },
+    {
+        title: 'Portfolio V1',
+        category: 'WEB DEVELOPMENT',
+        image: '/img/project-3.png',
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #e0c0ff 0%, #d0b0ff 100%)',
+    }
 ];
 
 export const packages = [
