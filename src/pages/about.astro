@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CardArrow from '../components/CardArrow.astro';
+import { siteConfig, experience, education } from '../data/siteConfig';
+
+const pageTitle = 'About - Tirth Gaudani | Full Stack Developer';
+const pageDescription = `Learn about ${siteConfig.name}, a passionate MERN Stack Developer with expertise in React, Node.js, MongoDB, and Express.js. View experience, education, and skills.`;
+
+// About page structured data
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Tirth Gaudani",
+  "description": pageDescription,
+  "mainEntity": {
+    "@type": "Person",
+    "name": siteConfig.name,
+    "jobTitle": "Senior MERN Stack Developer",
+    "description": "I am a San francisco-based product designer with a focus on web design, illustration, a visual development. I have a diverse range of experience having worked across various fields and industries.",
+    "image": `${siteConfig.url}/img/profile.png`,
+    "url": `${siteConfig.url}/about`,
+    "sameAs": Object.values(siteConfig.social)
+  }
+};
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={pageDescription}
+  structuredData={aboutSchema}
+>
+  <main class="gridx-main page-full">
+
+    <!-- PAGE TITLE -->
+    <h1 class="page-title">
+      <span class="star-icon">✸</span>SELF-SUMMARY<span class="star-icon">✸</span>
+    </h1>
+
+    <!-- ABOUT HERO -->
+    <section class="about-hero" aria-label="About Me">
+      <div class="about-image-card">
+        <img 
+          src="/img/profile.png" 
+          alt={`${siteConfig.name} - Full Stack Developer`}
+          width="320"
+          height="400"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <div class="about-bio">
+        <h2 class="about-name">{siteConfig.name}</h2>
+        <p class="about-text">
+          I am a San francisco-based product designer with a focus on web design,
+          illustration, a visual development. I have a diverse range of experience having
+          worked across various fields and industries.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE & EDUCATION -->
+    <section class="about-timeline" aria-label="Experience and Education">
+      <div class="timeline-col">
+        <h3 class="timeline-heading">EXPERIENCE</h3>
+        {experience.map((item) => (
+          <div class="timeline-entry">
+            <span class="timeline-date">{item.date}</span>
+            <h4 class="timeline-title">{item.title}</h4>
+            <p class="timeline-company">{item.company}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="timeline-col">
+        <h3 class="timeline-heading">EDUCATION</h3>
+        {education.map((item) => (
+          <div class="timeline-entry">
+            <span class="timeline-date">{item.date}</span>
+            <h4 class="timeline-title">{item.title}</h4>
+            <p class="timeline-company">{item.company}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- BOTTOM CARDS -->
+    <section class="about-cards-row" aria-label="More Information">
+      <!-- Profiles Card -->
+      <a href="#" class="about-card profiles-card-about">
+        <div class="profiles-icons-about">
+          <span class="profile-icon-about"><i class="fab fa-dribbble" aria-hidden="true"></i></span>
+          <span class="profile-icon-about"><i class="fab fa-twitter" aria-hidden="true"></i></span>
+        </div>
+        <div class="card-footer">
+          <span class="card-label">STAY WITH ME</span>
+          <h4 class="card-title">Profiles</h4>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- CTA Card -->
+      <a href="/contact" class="about-card cta-card-about">
+        <div class="cta-content">
+          <span class="cta-rotating-star">✦</span>
+          <h3 class="cta-heading">Let's<br />work <span>together.</span></h3>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- Credentials Card -->
+      <a href="/portfolio" class="about-card credentials-card-about">
+        <div class="signature-area">
+          <span class="signature-text">TG</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-label">MORE ABOUT ME</span>
+          <h4 class="card-title">Credentials</h4>
+        </div>
+        <CardArrow />
+      </a>
+    </section>
+
+  </main>
+</BaseLayout>

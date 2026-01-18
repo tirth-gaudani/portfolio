@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://www.tirth-gaudani.ct.ws/sitemap.xml

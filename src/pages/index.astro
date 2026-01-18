@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CardArrow from '../components/CardArrow.astro';
+import { siteConfig } from '../data/siteConfig';
+
+const pageDescription = `${siteConfig.name} is a passionate MERN Stack Developer with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in Ahmedabad, Gujarat.`;
+
+// Homepage specific structured data
+const homepageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": siteConfig.name,
+    "url": siteConfig.url,
+    "image": `${siteConfig.url}/img/profile.png`,
+    "sameAs": Object.values(siteConfig.social),
+    "jobTitle": "Senior MERN Stack Developer",
+    "description": pageDescription
+  }
+};
+---
+
+<BaseLayout 
+  title={siteConfig.title} 
+  description={pageDescription}
+  structuredData={homepageSchema}
+>
+  <main class="gridx-main">
+    <div class="bento-grid">
+      
+      <!-- PROFILE CARD -->
+      <a href="/about" class="bento-card profile-card">
+        <div class="profile-img">
+          <img 
+            src="/img/profile.png" 
+            alt={`${siteConfig.name} - MERN Stack Developer`}
+            width="300"
+            height="300"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <div class="profile-content">
+          <span class="profile-label">A MERN STACK DEVELOPER</span>
+          <h1 class="profile-name">Tirth<br />Gaudani.</h1>
+          <p class="profile-desc">I am a Full Stack Developer based in Ahmedabad, Gujarat.</p>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- MARQUEE -->
+      <div class="bento-marquee">
+        <div class="marquee-track">
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+        </div>
+      </div>
+
+      <!-- CREDENTIALS CARD -->
+      <a href="/about" class="bento-card credentials-card">
+        <div class="card-signature">
+          <img 
+            src="/img/sign.png" 
+            alt="Signature" 
+            width="150" 
+            height="70"
+            loading="lazy"
+            decoding="async"
+            onerror="this.outerHTML='<span class=sig-text>TG</span>'"
+          />
+        </div>
+        <div class="card-bottom">
+          <span class="card-label">MORE ABOUT ME</span>
+          <h3 class="card-title">Credentials</h3>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- PROJECTS CARD -->
+      <a href="/portfolio" class="bento-card projects-card">
+        <div class="projects-inner">
+          <div class="project-preview">
+            <img 
+              src="/img/my-works.png" 
+              alt="My Works" 
+              width="300" 
+              height="200"
+              loading="lazy"
+              decoding="async"
+              onerror="this.parentElement.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'"
+            />
+          </div>
+          <div class="project-info">
+            <div class="card-bottom">
+              <span class="card-label">SHOWCASE</span>
+              <h3 class="card-title">Projects</h3>
+            </div>
+            <CardArrow />
+          </div>
+        </div>
+      </a>
+
+      <!-- NPM PACKAGES CARD -->
+      <a href="/packages" class="bento-card gfonts-card">
+        <div class="gfonts-icon">
+          <i class="fab fa-npm" aria-hidden="true"></i>
+        </div>
+        <div class="card-bottom">
+          <span class="card-label">NPM</span>
+          <h3 class="card-title">Packages</h3>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- SERVICES CARD -->
+      <a href="/about#skills" class="bento-card services-card">
+        <div class="services-icons">
+          <div class="service-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
+          <div class="service-icon"><i class="fas fa-font" aria-hidden="true"></i></div>
+          <div class="service-icon"><i class="fas fa-cubes" aria-hidden="true"></i></div>
+          <div class="service-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-label">SPECIALIZATION</span>
+          <h3 class="card-title">Services Offering</h3>
+        </div>
+        <CardArrow />
+      </a>
+
+      <!-- PROFILES CARD -->
+      <div class="bento-card profiles-card">
+        <div class="profiles-icons">
+          <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="Dribbble">
+            <i class="fab fa-dribbble" aria-hidden="true"></i>
+          </a>
+          <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="card-bottom">
+          <span class="card-label">STAY WITH ME</span>
+          <h3 class="card-title">Profiles</h3>
+        </div>
+        <CardArrow />
+      </div>
+
+      <!-- STATS CARD -->
+      <div class="bento-card stats-card">
+        <div class="stat-item">
+          <span class="stat-number">0{siteConfig.experience.years}</span>
+          <span class="stat-label">YEARS<br />EXPERIENCE</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">+{siteConfig.experience.clients}</span>
+          <span class="stat-label">CLIENTS<br />WORLDWIDE</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">+{siteConfig.experience.projects}</span>
+          <span class="stat-label">TOTAL<br />PROJECTS</span>
+        </div>
+      </div>
+
+      <!-- CTA CARD -->
+      <a href="/contact" class="bento-card cta-card">
+        <span class="cta-star">✦</span>
+        <h3 class="cta-text">Let's<br />work <span>together.</span></h3>
+        <CardArrow />
+      </a>
+
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import { mobileNavigation } from '../data/siteConfig';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <button class="mobile-close" id="mobileClose" aria-label="Close menu">
+    <i class="fas fa-times"></i>
+  </button>
+  {mobileNavigation.map((link) => (
+    <a 
+      href={link.href} 
+      class:list={['mobile-link', { active: currentPath === link.href }]}
+    >
+      {link.name}
+    </a>
+  ))}
+</div>

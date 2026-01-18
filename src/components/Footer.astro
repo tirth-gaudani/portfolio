@@ -1,0 +1,13 @@
+---
+import { navigation, siteConfig } from '../data/siteConfig';
+---
+
+<footer class="gridx-footer">
+  <a href="/" class="footer-logo">{siteConfig.logo}</a>
+  <nav class="footer-nav" aria-label="Footer navigation">
+    {navigation.map((link) => (
+      <a href={link.href}>{link.name.toUpperCase()}</a>
+    ))}
+  </nav>
+  <p class="footer-copy">© All rights reserved by <a href="/">{siteConfig.name}</a></p>
+</footer>

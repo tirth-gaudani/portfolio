@@ -1,0 +1,39 @@
+---
+import { navigation } from '../data/siteConfig';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<header class="gridx-header">
+  <div class="header-container">
+    <a href="/" class="header-logo">Tirth Gaudani</a>
+
+    <nav class="header-nav" aria-label="Main navigation">
+      {navigation.map((link) => (
+        <a 
+          href={link.href} 
+          class:list={['nav-link', { active: currentPath === link.href }]}
+        >
+          {link.name}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <a href="/contact" class="btn-talk">Let's talk</a>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>

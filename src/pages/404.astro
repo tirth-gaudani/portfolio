@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../data/siteConfig';
+
+const pageTitle = '404 - Page Not Found';
+const pageDescription = 'The page you are looking for could not be found. Return to the homepage to explore the portfolio.';
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={pageDescription}
+>
+  <main class="gridx-main page-full" style="text-align: center; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    
+    <h1 class="page-title" style="margin-bottom: 30px;">
+      <span class="star-icon">✸</span>404<span class="star-icon">✸</span>
+    </h1>
+    
+    <p style="font-size: 18px; color: var(--text-gray); margin-bottom: 40px; max-width: 500px;">
+      Oops! The page you're looking for doesn't exist or has been moved.
+    </p>
+    
+    <a href="/" class="btn-talk" style="display: inline-flex; align-items: center; gap: 10px;">
+      <i class="fas fa-home" aria-hidden="true"></i>
+      Back to Home
+    </a>
+
+  </main>
+</BaseLayout>

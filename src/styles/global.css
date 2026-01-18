@@ -1,0 +1,1963 @@
+/* ==========================================================================
+   GRIDX EXACT REPLICA - FINAL V8
+   PIXEL-PERFECT MATCH TO https://wpriverthemes.com/gridx/
+   ========================================================================== */
+
+/* Fonts are loaded in BaseLayout.astro with deferred loading for better performance */
+
+/* ==========================================================================
+   CSS VARIABLES - EXACT GRIDX COLORS
+   ========================================================================== */
+:root {
+    --bg-body: #0d0d0d;
+    --bg-card: #141414;
+    --bg-card-hover: #1a1a1a;
+
+    --text-white: #ffffff;
+    --text-gray: #9e9e9e;
+    --text-muted: #666666;
+
+    --border-color: #252525;
+    --border-hover: #3a3a3a;
+
+    --accent: #7b68ee;
+    --accent-light: #9d8df1;
+
+    --radius-xl: 30px;
+    --radius-lg: 25px;
+    --radius-md: 20px;
+    --radius-sm: 15px;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --shadow-glow: 0 0 60px rgba(108, 92, 231, 0.15);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Theme */
+html:not(.dark) {
+    --bg-body: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-card-hover: #fafafa;
+    --text-white: #1a1a1a;
+    --text-gray: #666666;
+    --text-muted: #999999;
+    --border-color: #e5e5e5;
+    --border-hover: #d0d0d0;
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-body);
+    color: var(--text-gray);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Ambient Glow Effects - EXACT GRIDX */
+body::before {
+    content: '';
+    position: fixed;
+    top: -40%;
+    left: -30%;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(123, 104, 238, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -40%;
+    right: -30%;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(123, 104, 238, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ==========================================================================
+   HEADER - EXACT GRIDX
+   ========================================================================== */
+.gridx-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 24px 0;
+    background: transparent;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-white);
+    letter-spacing: -0.5px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-link {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-gray);
+    padding: 8px 0;
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--text-white);
+}
+
+.nav-link.active {
+    color: var(--text-white);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-white);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.theme-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-white);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.theme-toggle:hover {
+    color: var(--accent);
+}
+
+.btn-talk {
+    padding: 14px 28px;
+    background: var(--bg-card);
+    color: var(--text-white);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.btn-talk:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.mobile-menu-btn {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 15px;
+}
+
+.mobile-menu-btn span {
+    width: 100%;
+    height: 2px;
+    background: var(--text-white);
+    display: block;
+    border-radius: 2px;
+    transition: var(--transition);
+}
+
+/* ==========================================================================
+   MOBILE MENU
+   ========================================================================== */
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-body);
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-close {
+    align-self: flex-end;
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-white);
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 50px;
+    transition: var(--transition);
+}
+
+.mobile-close:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.mobile-link {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text-gray);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.mobile-link:hover,
+.mobile-link.active {
+    color: var(--text-white);
+}
+
+/* ==========================================================================
+   MAIN LAYOUT
+   ========================================================================== */
+.gridx-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 130px 40px 80px;
+}
+
+/* ==========================================================================
+   BENTO GRID - EXACT GRIDX
+   ========================================================================== */
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr;
+    gap: 24px;
+}
+
+.bento-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.bento-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ==========================================================================
+   ARROW ICON - EXACT GRIDX STYLE
+   Circle with horizontal line + 4-point star at the end
+   ========================================================================== */
+.card-arrow {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.2;
+    transition: var(--transition);
+    color: var(--text-white);
+}
+
+/* SVG Arrow Icon */
+.card-arrow svg,
+.card-arrow img {
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG stroke color inherits from color */
+.card-arrow svg circle,
+.card-arrow svg line,
+.card-arrow svg path {
+    stroke: currentColor;
+    transition: var(--transition);
+}
+
+/* Hover - Full opacity */
+.bento-card:hover .card-arrow,
+a:hover .card-arrow,
+.about-card:hover .card-arrow,
+.work-card:hover .card-arrow {
+    opacity: 1;
+}
+
+/* CSS Fallback Arrow (if SVG not used) */
+.card-arrow-css {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+/* Circle arc (almost complete circle) */
+.card-arrow-css::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+}
+
+/* Horizontal line with star at end */
+.card-arrow-css::after {
+    content: '✦';
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.2);
+    position: relative;
+    left: 2px;
+}
+
+/* Line inside - using gradient */
+.card-arrow-css .line {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%);
+}
+
+/* Hover state for CSS fallback */
+.bento-card:hover .card-arrow-css,
+a:hover .card-arrow-css,
+.about-card:hover .card-arrow-css,
+.work-card:hover .card-arrow-css {
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.bento-card:hover .card-arrow-css::before,
+a:hover .card-arrow-css::before,
+.about-card:hover .card-arrow-css::before,
+.work-card:hover .card-arrow-css::before {
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.bento-card:hover .card-arrow-css::after,
+a:hover .card-arrow-css::after,
+.about-card:hover .card-arrow-css::after,
+.work-card:hover .card-arrow-css::after {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.bento-card:hover .card-arrow-css .line,
+a:hover .card-arrow-css .line,
+.about-card:hover .card-arrow-css .line,
+.work-card:hover .card-arrow-css .line {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Card Labels & Titles */
+.card-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card-bottom,
+.card-footer {
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   PROFILE CARD
+   ========================================================================== */
+.profile-card {
+    grid-column: 1;
+    grid-row: 1 / 3;
+}
+
+.profile-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 28px;
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.1) 0%, transparent 100%);
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.profile-name {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 14px;
+}
+
+.profile-desc {
+    font-size: 15px;
+    color: var(--text-gray);
+    line-height: 1.7;
+}
+
+/* ==========================================================================
+   MARQUEE - EXACT GRIDX
+   ========================================================================== */
+.bento-marquee {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 70px;
+}
+
+.marquee-track {
+    display: flex;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+}
+
+.marquee-track span {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-gray);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.marquee-track b {
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.marquee-track .star {
+    color: var(--accent);
+    font-size: 16px;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ==========================================================================
+   CREDENTIALS CARD
+   ========================================================================== */
+.credentials-card {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 200px;
+}
+
+.card-signature {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-signature img {
+    max-height: 70px;
+    opacity: 0.4;
+    filter: invert(1);
+}
+
+html:not(.dark) .card-signature img {
+    filter: none;
+}
+
+.sig-text {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 56px;
+    color: var(--text-white);
+    opacity: 0.25;
+}
+
+/* ==========================================================================
+   PROJECTS CARD
+   ========================================================================== */
+.projects-card {
+    grid-column: 3;
+    grid-row: 2;
+    padding: 0;
+    overflow: hidden;
+}
+
+.projects-inner {
+    height: 100%;
+    display: flex;
+}
+
+.project-preview {
+    flex: 1.2;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-info {
+    flex: 1;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+}
+
+/* ==========================================================================
+   GFONTS / NPM CARD
+   ========================================================================== */
+.gfonts-card {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.gfonts-icon {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
+.gfonts-icon i {
+    font-size: 50px;
+    color: #CB3837;
+}
+
+/* ==========================================================================
+   SERVICES CARD
+   ========================================================================== */
+.services-card {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.services-icons {
+    flex: 1;
+    display: flex;
+    gap: 14px;
+}
+
+.service-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.service-icon:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   PROFILES CARD
+   ========================================================================== */
+.profiles-card {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.profiles-icons {
+    flex: 1;
+    display: flex;
+    gap: 14px;
+}
+
+.profile-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.profile-icon:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   STATS ROW - EXACT GRIDX
+   ========================================================================== */
+.stats-card {
+    grid-column: 1 / 3;
+    grid-row: 4;
+    flex-direction: row;
+    padding: 0;
+}
+
+.stat-item {
+    flex: 1;
+    padding: 36px 30px;
+    border-right: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-number {
+    font-family: var(--font-heading);
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--text-white);
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   CTA CARD - EXACT GRIDX
+   ========================================================================== */
+.cta-card {
+    grid-column: 3;
+    grid-row: 4;
+    padding: 36px;
+}
+
+.cta-star {
+    font-size: 16px;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: rotateStar 8s linear infinite;
+}
+
+@keyframes rotateStar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.cta-text {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -1px;
+}
+
+.cta-text span {
+    color: var(--accent);
+}
+
+/* ==========================================================================
+   PAGE TITLE - EXACT GRIDX (Stars touching text)
+   ========================================================================== */
+.page-full {
+    padding-top: 140px;
+}
+
+.page-title {
+    font-size: 56px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 60px;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    font-style: italic;
+}
+
+.page-title .star-icon {
+    font-size: 24px;
+    color: var(--text-white);
+    font-style: normal;
+}
+
+/* ==========================================================================
+   ABOUT PAGE - EXACT GRIDX LAYOUT
+   ========================================================================== */
+.about-hero {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 60px;
+    margin-bottom: 70px;
+    align-items: start;
+}
+
+.about-image-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.1) 0%, transparent 100%);
+}
+
+.about-image-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+.about-bio {
+    padding-top: 30px;
+}
+
+.about-name {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    letter-spacing: -0.5px;
+}
+
+.about-text {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text-gray);
+}
+
+/* Timeline - EXACT GRIDX */
+.about-timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 70px;
+}
+
+.timeline-col {
+    padding: 0;
+}
+
+.timeline-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: 2px;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+}
+
+.timeline-entry {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.timeline-entry:first-of-type {
+    padding-top: 0;
+}
+
+.timeline-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.timeline-date {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.timeline-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.timeline-company {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* About Bottom Cards - EXACT GRIDX 3-column layout */
+.about-cards-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 24px;
+}
+
+.about-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    transition: var(--transition);
+}
+
+.about-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Profiles Card on About */
+.profiles-icons-about {
+    display: flex;
+    gap: 14px;
+    margin-bottom: auto;
+}
+
+.profile-icon-about {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.profile-icon-about:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* CTA Card on About */
+.cta-card-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cta-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cta-rotating-star {
+    font-size: 16px;
+    color: var(--text-white);
+    margin-bottom: 18px;
+    display: inline-block;
+    animation: rotateStar 8s linear infinite;
+}
+
+.cta-heading {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.cta-heading span {
+    color: var(--accent);
+}
+
+/* Credentials Card on About */
+.credentials-card-about {
+    display: flex;
+    flex-direction: column;
+}
+
+.signature-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signature-text {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 60px;
+    color: var(--text-white);
+    opacity: 0.2;
+}
+
+/* ==========================================================================
+   WORKS PAGE - EXACT GRIDX
+   ========================================================================== */
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.work-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+    display: block;
+    transition: var(--transition);
+}
+
+.work-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-glow);
+}
+
+.work-card.work-large {
+    grid-row: span 2;
+}
+
+.work-image {
+    margin: 18px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #f5f5f7;
+}
+
+.work-large .work-image {
+    aspect-ratio: auto;
+    height: calc(100% - 100px);
+}
+
+.work-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-info {
+    padding: 0 26px 26px;
+}
+
+.work-category {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+}
+
+.work-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.work-card .card-arrow {
+    bottom: 22px;
+    right: 22px;
+}
+
+/* ==========================================================================
+   CONTACT PAGE - EXACT GRIDX
+   ========================================================================== */
+.contact-page {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+    padding-top: 140px;
+    align-items: start;
+}
+
+.contact-left {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.contact-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.contact-item {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.contact-item:last-child {
+    margin-bottom: 0;
+}
+
+.contact-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--text-white);
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.contact-item:hover .contact-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.contact-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+}
+
+.contact-text a,
+.contact-text span {
+    font-size: 15px;
+    color: var(--accent);
+    line-height: 1.6;
+}
+
+/* Social */
+.social-icons {
+    display: flex;
+    gap: 14px;
+}
+
+.social-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.social-icon:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+
+/* Contact Form */
+.contact-form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 50px;
+}
+
+.form-header {
+    margin-bottom: 40px;
+}
+
+.form-star {
+    font-size: 16px;
+    color: var(--text-white);
+    margin-bottom: 18px;
+    display: inline-block;
+    animation: rotateStar 8s linear infinite;
+}
+
+.form-title {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.form-title span {
+    color: var(--accent);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 18px 22px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 20px;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-submit:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   PACKAGES PAGE
+   ========================================================================== */
+.packages-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-gray);
+    margin-bottom: 50px;
+    margin-top: -35px;
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.package-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: var(--transition);
+}
+
+.package-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+.package-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #CB3837;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.package-info h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.package-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   FOOTER - EXACT GRIDX
+   ========================================================================== */
+.gridx-footer {
+    text-align: center;
+    padding: 80px 40px;
+    margin-top: 80px;
+}
+
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    margin-bottom: 30px;
+}
+
+.footer-nav a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: var(--transition);
+}
+
+.footer-nav a:hover {
+    color: var(--text-white);
+}
+
+.footer-copy {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.footer-copy a {
+    color: var(--accent);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bento-card,
+.about-card,
+.work-card,
+.package-card {
+    animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+}
+
+.bento-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.bento-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.bento-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.bento-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.bento-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.bento-card:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.bento-card:nth-child(7) {
+    animation-delay: 0.35s;
+}
+
+.bento-card:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+.bento-card:nth-child(9) {
+    animation-delay: 0.45s;
+}
+
+.about-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.about-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.about-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.work-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.work-card:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.work-card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.work-card:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.work-card:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.work-card:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .header-container {
+        padding: 0 30px;
+    }
+
+    .gridx-main {
+        padding: 120px 30px 70px;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .profile-card {
+        grid-column: 1 / 3;
+        flex-direction: row;
+        align-items: center;
+        gap: 35px;
+    }
+
+    .profile-img {
+        width: 200px;
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+
+    .bento-marquee {
+        grid-column: 1 / 3;
+        grid-row: 2;
+    }
+
+    .credentials-card {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .projects-card {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    .gfonts-card {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .services-card {
+        grid-column: 2;
+        grid-row: 4;
+    }
+
+    .profiles-card {
+        grid-column: 1;
+        grid-row: 5;
+    }
+
+    .stats-card {
+        grid-column: 2;
+        grid-row: 5;
+        flex-direction: column;
+    }
+
+    .stat-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+
+    .cta-card {
+        grid-column: 1 / 3;
+        grid-row: 6;
+    }
+
+    .about-cards-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about-cards-row .about-card:nth-child(2) {
+        grid-column: 1 / 3;
+        order: -1;
+    }
+
+    .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .work-card.work-large {
+        grid-row: span 1;
+    }
+}
+
+@media (max-width: 900px) {
+    .header-nav {
+        display: none;
+    }
+
+    .btn-talk {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .about-hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-timeline {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .contact-page {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gridx-header {
+        padding: 18px 0;
+    }
+
+    .header-container {
+        padding: 0 20px;
+    }
+
+    .gridx-main {
+        padding: 100px 20px 60px;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .profile-card {
+        grid-column: 1;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-img {
+        width: 100%;
+        max-width: 260px;
+        margin: 0 auto 24px;
+    }
+
+    .profile-name {
+        font-size: 38px;
+    }
+
+    .bento-marquee,
+    .credentials-card,
+    .projects-card,
+    .gfonts-card,
+    .services-card,
+    .profiles-card,
+    .stats-card,
+    .cta-card {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .projects-inner {
+        flex-direction: column;
+    }
+
+    .project-preview {
+        min-height: 180px;
+    }
+
+    .stats-card {
+        flex-direction: column;
+    }
+
+    .stat-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+
+    .cta-text {
+        font-size: 28px;
+    }
+
+    .page-title {
+        font-size: 36px;
+    }
+
+    .about-cards-row {
+        grid-template-columns: 1fr;
+    }
+
+    .about-cards-row .about-card {
+        order: 0 !important;
+    }
+
+    .works-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-title {
+        font-size: 30px;
+    }
+
+    .packages-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-nav {
+        flex-wrap: wrap;
+        gap: 18px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-logo {
+        font-size: 22px;
+    }
+
+    .gridx-main {
+        padding: 90px 16px 50px;
+    }
+
+    .profile-name {
+        font-size: 32px;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .stat-number {
+        font-size: 40px;
+    }
+
+    .cta-text,
+    .cta-heading {
+        font-size: 24px;
+    }
+
+    .form-title {
+        font-size: 26px;
+    }
+
+    .card-arrow {
+        width: 42px;
+        height: 42px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .about-name {
+        font-size: 28px;
+    }
+
+    .about-text {
+        font-size: 15px;
+    }
+}
+
+/* ==========================================================================
+   CONTACT GRID - ADDITIONAL STYLES
+   ========================================================================== */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.contact-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-section .contact-icon {
+    margin-bottom: 16px;
+}
+
+.contact-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.contact-link {
+    font-size: 15px;
+    color: var(--accent);
+    line-height: 1.8;
+    display: block;
+}
+
+.contact-link:hover {
+    color: var(--accent-light);
+}
+
+.contact-address {
+    font-size: 15px;
+    color: var(--text-gray);
+    line-height: 1.8;
+}
+
+.contact-social {
+    display: flex;
+    gap: 14px;
+}
+
+.rotating-star {
+    font-size: 16px;
+    color: var(--text-white);
+    margin-bottom: 18px;
+    display: inline-block;
+    animation: rotateStar 8s linear infinite;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 20px 30px;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+}
+
+.submit-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.submit-btn .card-arrow {
+    position: static;
+    width: 36px;
+    height: 36px;
+    opacity: 0.6;
+}
+
+.submit-btn:hover .card-arrow {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE - CONTACT GRID
+   ========================================================================== */
+@media (max-width: 900px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        gap: 40px;
+    }
+
+    .contact-form-card {
+        padding: 30px;
+    }
+
+    .form-title {
+        font-size: 28px;
+    }
+}
+
+/* ==========================================================================
+   FOCUS STATES FOR ACCESSIBILITY
+   ========================================================================== */
+.nav-link:focus-visible,
+.mobile-link:focus-visible,
+.btn-talk:focus-visible,
+.theme-toggle:focus-visible,
+.mobile-menu-btn:focus-visible,
+.mobile-close:focus-visible,
+.profile-icon:focus-visible,
+.social-icon:focus-visible,
+.submit-btn:focus-visible,
+.bento-card:focus-visible,
+.about-card:focus-visible,
+.work-card:focus-visible,
+.package-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   REDUCED MOTION PREFERENCES
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .marquee-track {
+        animation: none;
+    }
+
+    .cta-star,
+    .cta-rotating-star,
+    .rotating-star {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+@media print {
+
+    .gridx-header,
+    .mobile-menu,
+    .gridx-footer,
+    .card-arrow {
+        display: none;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .bento-card,
+    .about-card,
+    .work-card,
+    .package-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
