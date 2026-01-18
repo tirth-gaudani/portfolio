@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CardArrow from '../components/CardArrow.astro';
+import { siteConfig, projects } from '../data/siteConfig';
+
+const pageTitle = `Works - ${siteConfig.name} | My Projects`;
+const pageDescription = `Explore ${siteConfig.name}'s portfolio of web development projects including React, Node.js, MongoDB, and full-stack applications.`;
+
+const workSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `Works - ${siteConfig.name}`,
+  "description": pageDescription,
+  "url": `${siteConfig.url}/work`,
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": projects.map((project, index) => ({
+      "@type": "CreativeWork",
+      "position": index + 1,
+      "name": project.title,
+      "description": project.category,
+      "url": project.link
+    }))
+  }
+};
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={pageDescription}
+  structuredData={workSchema}
+>
+  <main class="gridx-main page-full">
+
+    <h1 class="page-title">
+      <span class="star-icon">✸</span>ALL PROJECTS<span class="star-icon">✸</span>
+    </h1>
+
+    <section class="works-grid" aria-label="Projects Gallery">
+      {projects.map((project) => (
+        <a 
+          href={project.link} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class:list={["work-card", { 'work-large': project.large }]}
+        >
+          <div class="work-image" style={`background: ${project.gradient};`}>
+            <img 
+              src={project.image} 
+              alt={project.title}
+              width="400"
+              height="400"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <div class="work-info">
+            <span class="work-category">{project.category}</span>
+            <h3 class="work-title">{project.title}</h3>
+          </div>
+          <CardArrow />
+        </a>
+      ))}
+    </section>
+
+  </main>
+</BaseLayout>

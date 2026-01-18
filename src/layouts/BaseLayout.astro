@@ -12,6 +12,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   structuredData?: object;
+  forcedTheme?: 'light' | 'dark';
 }
 
 const { 
@@ -20,10 +21,17 @@ const {
   canonicalURL = Astro.url.href,
   ogImage = '/img/profile.png',
   ogType = 'website',
-  structuredData
+  structuredData,
+  forcedTheme: forcedThemeProp
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+const forcedTheme = forcedThemeProp ?? (currentPath.startsWith('/gridxlight') ? 'light' : undefined);
+const showThemeToggle = !forcedTheme;
+const isGridxLight = currentPath.startsWith('/gridxlight');
+const isGridx = !isGridxLight && currentPath.startsWith('/gridx');
+const basePath = isGridxLight ? '/gridxlight' : isGridx ? '/gridx' : '';
+const navVariant = isGridxLight || isGridx ? 'gridx' : 'default';
 const fullTitle = title === siteConfig.title ? title : `${title} | ${siteConfig.name}`;
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteConfig.url}${ogImage}`;
 
@@ -36,10 +44,9 @@ const defaultStructuredData = {
   "image": `${siteConfig.url}/img/profile.png`,
   "sameAs": [
     siteConfig.social.linkedin,
-    siteConfig.social.github,
-    siteConfig.social.twitter
+    siteConfig.social.github
   ],
-  "jobTitle": "Senior MERN Stack Developer",
+  "jobTitle": siteConfig.profile.role,
   "worksFor": {
     "@type": "Organization",
     "name": "Smartway Technoway Pvt. Ltd."
@@ -59,9 +66,7 @@ const defaultStructuredData = {
   "knowsAbout": ["React", "Node.js", "MongoDB", "Express.js", "JavaScript", "TypeScript", "Full Stack Development"],
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Ahmedabad",
-    "addressRegion": "Gujarat",
-    "addressCountry": "India"
+    ...siteConfig.contact.address
   }
 };
 
@@ -69,12 +74,34 @@ const jsonLd = structuredData || defaultStructuredData;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class={forcedTheme === 'light' ? '' : 'dark'} data-forced-theme={forcedTheme}>
 <head>
   <!-- Essential Meta Tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <script is:inline>
+    (function () {
+      try {
+        const forcedTheme = document.documentElement.getAttribute('data-forced-theme');
+        if (forcedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+          return;
+        }
+        if (forcedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          return;
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (_) {}
+    })();
+  </script>
   
   <!-- Primary Meta Tags for SEO -->
   <title>{fullTitle}</title>
@@ -152,12 +179,12 @@ const jsonLd = structuredData || defaultStructuredData;
   <meta name="generator" content={Astro.generator} />
 </head>
 <body>
-  <Header currentPath={currentPath} />
-  <MobileMenu currentPath={currentPath} />
+  <Header currentPath={currentPath} showThemeToggle={showThemeToggle} basePath={basePath} navVariant={navVariant} />
+  <MobileMenu currentPath={currentPath} basePath={basePath} navVariant={navVariant} />
   
   <slot />
   
-  <Footer />
+  <Footer basePath={basePath} navVariant={navVariant} />
   
   <!-- Theme and Mobile Menu Script - Inlined for performance -->
   <script is:inline>

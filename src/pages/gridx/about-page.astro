@@ -1,24 +1,23 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CardArrow from '../components/CardArrow.astro';
-import { siteConfig, experience, education } from '../data/siteConfig';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardArrow from '../../components/CardArrow.astro';
+import { siteConfig, experience, education } from '../../data/siteConfig';
 
 const pageTitle = `About - ${siteConfig.name} | ${siteConfig.profile.role}`;
 const pageDescription = `Learn about ${siteConfig.name}, a passionate MERN Stack Developer with expertise in React, Node.js, MongoDB, and Express.js. View experience, education, and skills.`;
 
-// About page structured data
 const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": `About ${siteConfig.name}`,
   "description": pageDescription,
+  "url": `${siteConfig.url}/gridx/about-page`,
   "mainEntity": {
     "@type": "Person",
     "name": siteConfig.name,
     "jobTitle": siteConfig.profile.role,
     "description": siteConfig.profile.aboutSummary,
     "image": `${siteConfig.url}/img/profile.png`,
-    "url": `${siteConfig.url}/about`,
     "sameAs": Object.values(siteConfig.social)
   }
 };
@@ -31,12 +30,10 @@ const aboutSchema = {
 >
   <main class="gridx-main page-full">
 
-    <!-- PAGE TITLE -->
     <h1 class="page-title">
       <span class="star-icon">✸</span>SELF-SUMMARY<span class="star-icon">✸</span>
     </h1>
 
-    <!-- ABOUT HERO -->
     <section class="about-hero" aria-label="About Me">
       <div class="about-image-card">
         <img 
@@ -57,7 +54,6 @@ const aboutSchema = {
       </div>
     </section>
 
-    <!-- EXPERIENCE & EDUCATION -->
     <section class="about-timeline" aria-label="Experience and Education">
       <div class="timeline-col">
         <h3 class="timeline-heading">EXPERIENCE</h3>
@@ -82,9 +78,7 @@ const aboutSchema = {
       </div>
     </section>
 
-    <!-- BOTTOM CARDS -->
     <section class="about-cards-row" aria-label="More Information">
-      <!-- Profiles Card -->
       <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="about-card profiles-card-about">
         <div class="profiles-icons-about">
           <span class="profile-icon-about"><i class="fab fa-linkedin-in" aria-hidden="true"></i></span>
@@ -97,8 +91,7 @@ const aboutSchema = {
         <CardArrow />
       </a>
 
-      <!-- CTA Card -->
-      <a href="/contact" class="about-card cta-card-about">
+      <a href="/gridx/contact" class="about-card cta-card-about">
         <div class="cta-content">
           <span class="cta-rotating-star">✦</span>
           <h3 class="cta-heading">Let's<br />work <span>together.</span></h3>
@@ -106,8 +99,7 @@ const aboutSchema = {
         <CardArrow />
       </a>
 
-      <!-- Credentials Card -->
-      <a href="/work" class="about-card credentials-card-about">
+      <a href="/gridx/work" class="about-card credentials-card-about">
         <div class="signature-area">
           <span class="signature-text">TG</span>
         </div>

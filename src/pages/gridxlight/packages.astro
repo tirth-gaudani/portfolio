@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig, packages } from '../../data/siteConfig';
+
+const pageTitle = `My Packages - ${siteConfig.name} | NPM Packages`;
+const pageDescription = `Explore ${siteConfig.name}'s open-source NPM packages built to boost developer productivity. Including image watermark, HTML to PDF, React components, and more.`;
+
+const packagesSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `NPM Packages by ${siteConfig.name}`,
+  "description": pageDescription,
+  "url": `${siteConfig.url}/gridxlight/packages`,
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": packages.map((pkg, index) => ({
+      "@type": "SoftwareSourceCode",
+      "position": index + 1,
+      "name": pkg.name,
+      "description": pkg.description,
+      "url": pkg.url,
+      "programmingLanguage": "JavaScript",
+      "codeRepository": pkg.url
+    }))
+  }
+};
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={pageDescription}
+  structuredData={packagesSchema}
+>
+  <main class="gridx-main page-full">
+
+    <h1 class="page-title">
+      <span class="star-icon">✸</span>MY PACKAGES<span class="star-icon">✸</span>
+    </h1>
+
+    <p class="packages-subtitle">Explore my open-source NPM packages built to boost developer productivity.</p>
+
+    <section class="packages-grid" aria-label="NPM Packages">
+      {packages.map((pkg) => (
+        <a 
+          href={pkg.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="package-card"
+        >
+          <div class="package-icon" aria-hidden="true">npm</div>
+          <div class="package-info">
+            <h3>{pkg.name}</h3>
+            <p>{pkg.description}</p>
+          </div>
+        </a>
+      ))}
+    </section>
+
+  </main>
+</BaseLayout>

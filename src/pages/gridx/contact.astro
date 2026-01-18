@@ -1,18 +1,17 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CardArrow from '../components/CardArrow.astro';
-import { siteConfig } from '../data/siteConfig';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardArrow from '../../components/CardArrow.astro';
+import { siteConfig } from '../../data/siteConfig';
 
-const pageTitle = 'Contact - Tirth Gaudani | Get in Touch';
+const pageTitle = `Contact - ${siteConfig.name} | Get in Touch`;
 const pageDescription = `Contact ${siteConfig.name} for web development projects, collaborations, and freelance work. Get in touch for React, Node.js, and full-stack development services.`;
 
-// Contact page structured data
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": `Contact ${siteConfig.name}`,
   "description": pageDescription,
-  "url": `${siteConfig.url}/contact`,
+  "url": `${siteConfig.url}/gridx/contact`,
   "mainEntity": {
     "@type": "Person",
     "name": siteConfig.name,
@@ -33,14 +32,11 @@ const contactSchema = {
 >
   <main class="gridx-main page-full">
 
-    <!-- PAGE TITLE -->
     <h1 class="page-title">
       <span class="star-icon">✸</span>CONTACT<span class="star-icon">✸</span>
     </h1>
 
-    <!-- CONTACT LAYOUT -->
     <div class="contact-grid">
-      <!-- Left Column - Contact Info -->
       <section class="contact-info" aria-label="Contact Information">
         {siteConfig.contact.emails.length > 0 && (
           <div class="contact-section">
@@ -87,7 +83,6 @@ const contactSchema = {
         </div>
       </section>
 
-      <!-- Right Column - Contact Form Card -->
       <section class="contact-form-card" aria-label="Contact Form">
         <div class="form-header">
           <span class="rotating-star">✦</span>
@@ -149,7 +144,6 @@ const contactSchema = {
 </BaseLayout>
 
 <script is:inline>
-  // Form submission handler
   document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     alert('Thank you for your message! I will get back to you soon.');

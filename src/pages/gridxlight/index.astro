@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CardArrow from '../components/CardArrow.astro';
-import { siteConfig } from '../data/siteConfig';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardArrow from '../../components/CardArrow.astro';
+import { siteConfig } from '../../data/siteConfig';
 
 const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
 
@@ -9,14 +9,13 @@ const nameParts = siteConfig.name.split(' ');
 const firstName = nameParts[0] ?? siteConfig.name;
 const lastName = nameParts.slice(1).join(' ');
 
-// Homepage specific structured data
 const homepageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "mainEntity": {
     "@type": "Person",
     "name": siteConfig.name,
-    "url": siteConfig.url,
+    "url": `${siteConfig.url}/gridxlight/`,
     "image": `${siteConfig.url}/img/profile.png`,
     "sameAs": Object.values(siteConfig.social),
     "jobTitle": siteConfig.profile.role,
@@ -32,9 +31,8 @@ const homepageSchema = {
 >
   <main class="gridx-main">
     <div class="bento-grid">
-      
-      <!-- PROFILE CARD -->
-      <a href="/about" class="bento-card profile-card">
+
+      <a href="/gridxlight/about-page" class="bento-card profile-card">
         <div class="profile-img">
           <img 
             src="/img/profile.png" 
@@ -53,7 +51,6 @@ const homepageSchema = {
         <CardArrow />
       </a>
 
-      <!-- MARQUEE -->
       <div class="bento-marquee">
         <div class="marquee-track">
           <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
@@ -65,79 +62,26 @@ const homepageSchema = {
         </div>
       </div>
 
-      <!-- STATS CARD -->
-      <div class="bento-card stats-card">
-        <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.years} data-prefix="0">0{siteConfig.experience.years}</span>
-          <span class="stat-label">YEARS<br />EXPERIENCE</span>
+      <a href="/gridxlight/about-page" class="bento-card credentials-card">
+        <div class="card-signature">
+          <img 
+            src="/img/sign.png" 
+            alt="Signature" 
+            width="150" 
+            height="70"
+            loading="lazy"
+            decoding="async"
+            onerror="this.outerHTML='<span class=sig-text>TG</span>'"
+          />
         </div>
-        <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.clients} data-prefix="+">+{siteConfig.experience.clients}</span>
-          <span class="stat-label">CLIENTS<br />WORLDWIDE</span>
+        <div class="card-bottom">
+          <span class="card-label">MORE ABOUT ME</span>
+          <h3 class="card-title">Credentials</h3>
         </div>
-        <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.projects} data-prefix="+">+{siteConfig.experience.projects}</span>
-          <span class="stat-label">TOTAL<br />PROJECTS</span>
-        </div>
-      </div>
+        <CardArrow />
+      </a>
 
-      <script is:inline>
-        (() => {
-          const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (reduceMotion) return;
-
-          const card = document.querySelector('.stats-card');
-          if (!card) return;
-
-          const numbers = Array.from(card.querySelectorAll('.stat-number'));
-          if (numbers.length === 0) return;
-
-          const animateNumber = (el) => {
-            const targetRaw = el.getAttribute('data-count');
-            const prefix = el.getAttribute('data-prefix') || '';
-            const format = el.getAttribute('data-format') || '';
-
-            const target = Number(targetRaw);
-            if (!Number.isFinite(target)) return;
-
-            const duration = 1200;
-            const start = performance.now();
-            const from = 0;
-
-            const formatValue = (value) => {
-              if (format === 'pad2') return String(value).padStart(2, '0');
-              return String(value);
-            };
-
-            const tick = (now) => {
-              const t = Math.min(1, (now - start) / duration);
-              const eased = 1 - Math.pow(1 - t, 3);
-              const current = Math.round(from + (target - from) * eased);
-              el.textContent = `${prefix}${formatValue(current)}`;
-              if (t < 1) requestAnimationFrame(tick);
-            };
-
-            requestAnimationFrame(tick);
-          };
-
-          const io = new IntersectionObserver(
-            (entries) => {
-              for (const entry of entries) {
-                if (!entry.isIntersecting) continue;
-                numbers.forEach(animateNumber);
-                io.disconnect();
-                break;
-              }
-            },
-            { threshold: 0.35 }
-          );
-
-          io.observe(card);
-        })();
-      </script>
-
-      <!-- PROJECTS CARD -->
-      <a href="/work" class="bento-card projects-card">
+      <a href="/gridxlight/work" class="bento-card projects-card">
         <div class="projects-inner">
           <div class="project-preview">
             <img 
@@ -160,8 +104,7 @@ const homepageSchema = {
         </div>
       </a>
 
-      <!-- NPM PACKAGES CARD -->
-      <a href="/packages" class="bento-card gfonts-card">
+      <a href="/gridxlight/packages" class="bento-card gfonts-card">
         <div class="gfonts-icon">
           <i class="fab fa-npm" aria-hidden="true"></i>
         </div>
@@ -172,8 +115,7 @@ const homepageSchema = {
         <CardArrow />
       </a>
 
-      <!-- SERVICES CARD -->
-      <a href="/about" class="bento-card services-card">
+      <a href="/gridxlight/about-page" class="bento-card services-card">
         <div class="services-icons">
           <div class="service-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
           <div class="service-icon"><i class="fas fa-font" aria-hidden="true"></i></div>
@@ -187,7 +129,6 @@ const homepageSchema = {
         <CardArrow />
       </a>
 
-      <!-- PROFILES CARD -->
       <div class="bento-card profiles-card">
         <div class="profiles-icons">
           <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="LinkedIn">
@@ -204,30 +145,25 @@ const homepageSchema = {
         <CardArrow />
       </div>
 
-      <!-- EXPERTISE CARD -->
-      <div class="bento-card expertise-card">
-        <div class="expertise-grid" role="list" aria-label="Expertise">
-          {siteConfig.expertise.map((item) => (
-            <div class="expertise-item" role="listitem" title={item.name} aria-label={item.name}>
-              <span class="expertise-icon" aria-hidden="true">
-                <img class="expertise-img" src={item.iconSrc} alt="" width="30" height="30" loading="lazy" decoding="async" />
-              </span>
-              <span class="expertise-name">{item.name}</span>
-            </div>
-          ))}
+      <div class="bento-card stats-card">
+        <div class="stat-item">
+          <span class="stat-number">0{siteConfig.experience.years}</span>
+          <span class="stat-label">YEARS<br />EXPERIENCE</span>
         </div>
-        <div class="card-bottom">
-          <span class="card-label">EXPERTISE</span>
-          <h3 class="card-title">Tech Stack</h3>
+        <div class="stat-item">
+          <span class="stat-number">+{siteConfig.experience.clients}</span>
+          <span class="stat-label">CLIENTS<br />WORLDWIDE</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">+{siteConfig.experience.projects}</span>
+          <span class="stat-label">TOTAL<br />PROJECTS</span>
         </div>
       </div>
 
-
-      <!-- CTA CARD -->
-      <!-- <a href="/contact" class="bento-card cta-card">
+      <a href="/gridxlight/contact" class="bento-card cta-card">
         <h3 class="cta-text">Let's<br />work <span>together.</span></h3>
         <CardArrow />
-      </a> -->
+      </a>
 
     </div>
   </main>

@@ -6,9 +6,24 @@ export const siteConfig = {
     url: 'https://www.tirth-gaudani.ct.ws',
     author: 'Tirth Gaudani',
     locale: 'en_US',
-    logo: 'GridX',
+    logo: 'Tirth Gaudani',
     themeColor: '#7b68ee',
     twitter: '@tirthgaudani',
+    profile: {
+        role: 'MERN Stack Developer',
+        location: 'Ahmedabad, Gujarat',
+        aboutSummary: 'I am a Full Stack MERN Developer based in Ahmedabad, Gujarat. I build fast, scalable, and user-friendly web applications with React, Node.js, MongoDB, and Express.js.',
+    },
+    contact: {
+        emails: [] as string[],
+        phones: [] as string[],
+        locationLines: ['Ahmedabad, Gujarat', 'India'] as string[],
+        address: {
+            addressLocality: 'Ahmedabad',
+            addressRegion: 'Gujarat',
+            addressCountry: 'India',
+        },
+    },
     // HIGH TRAFFIC KEYWORDS FOR INDEXING
     keywords: [
         'Tirth Gaudani',
@@ -35,30 +50,52 @@ export const siteConfig = {
     social: {
         linkedin: 'https://linkedin.com/in/tirthgaudani',
         github: 'https://github.com/tirth-gaudani',
-        dribbble: 'https://dribbble.com',
-        twitter: 'https://twitter.com',
     },
     experience: {
         years: 3,
         clients: 13,
         projects: 13,
     },
+    expertise: [
+        { name: 'React.js', iconSrc: '/img/react-js.svg' },
+        { name: 'Node.js', iconSrc: '/img/node.js.svg' },
+        { name: 'Express.js', iconSrc: '/img/express-js.svg' },
+        { name: 'Next.js', iconSrc: '/img/next.js.svg' },
+        { name: 'Prisma', iconSrc: '/img/Prisma.svg' },
+        { name: 'MySQL', iconSrc: '/img/mysql.svg' },
+        { name: 'PostgreSQL', iconSrc: '/img/postgresql.svg' },
+        { name: 'JavaScript', iconSrc: '/img/JavaScript.svg' },
+        { name: 'TypeScript', iconSrc: '/img/TypeScript.svg' },
+        { name: 'NestJS', iconSrc: '/img/Nest.js.svg' },
+        { name: 'Socket.io', iconSrc: '/img/socket.io.svg' },
+    ],
 };
 
 export const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Works', href: '/portfolio' },
-    // { name: 'Contact', href: '/contact' },
+    { name: 'Works', href: '/work' },
     { name: 'My Packages', href: '/packages' },
+];
+
+export const navigationGridx = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Works', href: '/work' },
 ];
 
 export const mobileNavigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Works', href: '/portfolio' },
+    { name: 'Works', href: '/work' },
     { name: 'My Packages', href: '/packages' },
-    // { name: 'Contact', href: '/contact' },
+];
+
+export const mobileNavigationGridx = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Works', href: '/work' },
+    { name: 'My Packages', href: '/packages' },
 ];
 
 export const projects = [

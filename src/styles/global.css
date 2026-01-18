@@ -147,6 +147,40 @@ img {
     font-weight: 700;
     color: var(--text-white);
     letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo-mark {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+html:not(.dark) .logo-img--dark {
+    display: none;
+}
+
+html.dark .logo-img--light {
+    display: none;
+}
+
+.header-logo:hover .logo-mark {
+    border-color: var(--border-hover);
+}
+
+.logo-text {
+    line-height: 1;
 }
 
 .header-nav {
@@ -317,6 +351,7 @@ img {
 .bento-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1.2fr;
+    grid-template-rows: 55px auto auto auto;
     gap: 24px;
 }
 
@@ -480,7 +515,7 @@ a:hover .card-arrow-css .line,
    ========================================================================== */
 .profile-card {
     grid-column: 1;
-    grid-row: 1 / 3;
+    grid-row: 1 / 5;
 }
 
 .profile-img {
@@ -533,7 +568,8 @@ a:hover .card-arrow-css .line,
     overflow: hidden;
     display: flex;
     align-items: center;
-    min-height: 70px;
+    /* min-height: 70px; */
+    height: 55px;
 }
 
 .marquee-track {
@@ -577,7 +613,7 @@ a:hover .card-arrow-css .line,
    ========================================================================== */
 .credentials-card {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
     min-height: 200px;
 }
 
@@ -610,7 +646,7 @@ html:not(.dark) .card-signature img {
    ========================================================================== */
 .projects-card {
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 3;
     padding: 0;
     overflow: hidden;
 }
@@ -646,7 +682,7 @@ html:not(.dark) .card-signature img {
    GFONTS / NPM CARD
    ========================================================================== */
 .gfonts-card {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 3;
 }
 
@@ -666,7 +702,7 @@ html:not(.dark) .card-signature img {
    ========================================================================== */
 .services-card {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 .services-icons {
@@ -699,7 +735,7 @@ html:not(.dark) .card-signature img {
    ========================================================================== */
 .profiles-card {
     grid-column: 3;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 .profiles-icons {
@@ -728,18 +764,86 @@ html:not(.dark) .card-signature img {
 }
 
 /* ==========================================================================
+   EXPERTISE CARD
+   ========================================================================== */
+.expertise-card {
+    grid-column: 1 / 4;
+    grid-row: 5;
+    padding: 26px;
+}
+
+.expertise-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 12px;
+    align-content: start;
+}
+
+.expertise-item {
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: transparent;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.expertise-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.expertise-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.expertise-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+}
+
+.expertise-item:hover .expertise-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.expertise-name {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* ==========================================================================
    STATS ROW - EXACT GRIDX
    ========================================================================== */
 .stats-card {
-    grid-column: 1 / 3;
-    grid-row: 4;
+    grid-column: 2 / 4;
+    grid-row: 2;
     flex-direction: row;
     padding: 0;
+    align-self: start;
 }
 
 .stat-item {
     flex: 1;
-    padding: 36px 30px;
+    padding: 22px 26px;
     border-right: 1px solid var(--border-color);
 }
 
@@ -749,11 +853,11 @@ html:not(.dark) .card-signature img {
 
 .stat-number {
     font-family: var(--font-heading);
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 700;
     color: var(--text-white);
     line-height: 1;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .stat-label {
@@ -1358,12 +1462,19 @@ html:not(.dark) .card-signature img {
 }
 
 .footer-logo {
-    font-family: var(--font-heading);
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-white);
     margin-bottom: 30px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+
+.footer-logo-mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
 }
 
 .footer-nav {
@@ -1504,6 +1615,7 @@ html:not(.dark) .card-signature img {
 
     .bento-grid {
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
     }
 
     .profile-card {
@@ -1524,34 +1636,45 @@ html:not(.dark) .card-signature img {
         grid-row: 2;
     }
 
+    .stats-card {
+        grid-column: 1 / 3;
+        grid-row: 3;
+        flex-direction: row;
+    }
+
     .credentials-card {
         grid-column: 1;
-        grid-row: 3;
+        grid-row: 4;
     }
 
     .projects-card {
         grid-column: 2;
-        grid-row: 3;
+        grid-row: 4;
     }
 
     .gfonts-card {
         grid-column: 1;
-        grid-row: 4;
+        grid-row: 5;
     }
 
     .services-card {
         grid-column: 2;
-        grid-row: 4;
+        grid-row: 5;
     }
 
     .profiles-card {
         grid-column: 1;
-        grid-row: 5;
+        grid-row: 6;
+    }
+
+    .expertise-card {
+        grid-column: 1 / 3;
+        grid-row: 7;
     }
 
     .stats-card {
         grid-column: 2;
-        grid-row: 5;
+        grid-row: 6;
         flex-direction: column;
     }
 
@@ -1566,7 +1689,7 @@ html:not(.dark) .card-signature img {
 
     .cta-card {
         grid-column: 1 / 3;
-        grid-row: 6;
+        grid-row: 8;
     }
 
     .about-cards-row {
@@ -1587,7 +1710,7 @@ html:not(.dark) .card-signature img {
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
     .header-nav {
         display: none;
     }
@@ -1614,6 +1737,10 @@ html:not(.dark) .card-signature img {
         grid-template-columns: 1fr;
         gap: 50px;
     }
+
+    .bento-grid {
+        grid-template-rows: auto;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1632,6 +1759,7 @@ html:not(.dark) .card-signature img {
     .bento-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+        grid-template-rows: auto;
     }
 
     .profile-card {
@@ -1656,6 +1784,7 @@ html:not(.dark) .card-signature img {
     .gfonts-card,
     .services-card,
     .profiles-card,
+    .expertise-card,
     .stats-card,
     .cta-card {
         grid-column: 1;
@@ -1724,6 +1853,10 @@ html:not(.dark) .card-signature img {
 @media (max-width: 480px) {
     .header-logo {
         font-size: 22px;
+    }
+
+    .logo-text {
+        display: none;
     }
 
     .gridx-main {

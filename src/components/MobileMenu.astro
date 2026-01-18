@@ -1,21 +1,45 @@
 ---
-import { mobileNavigation } from '../data/siteConfig';
+import { mobileNavigation, mobileNavigationGridx } from '../data/siteConfig';
 
 interface Props {
   currentPath: string;
+  basePath?: string;
+  navVariant?: 'default' | 'gridx';
 }
 
-const { currentPath } = Astro.props;
+const { currentPath, basePath = '', navVariant = 'default' } = Astro.props;
+
+const normalizedCurrentPath = currentPath.length > 1 ? currentPath.replace(/\/$/, '') : currentPath;
+const normalizedBasePath = basePath ? basePath.replace(/\/$/, '') : '';
+
+const mapHref = (href: string) => {
+  if (navVariant === 'gridx') {
+    if (href === '/about') href = '/about-page';
+  }
+
+  if (!normalizedBasePath) return href;
+  if (href === '/') return `${normalizedBasePath}/`;
+  return `${normalizedBasePath}${href}`;
+};
+
+const isActive = (href: string) => {
+  const target = mapHref(href);
+  const normalizedTarget = target.length > 1 ? target.replace(/\/$/, '') : target;
+  if (normalizedCurrentPath === normalizedTarget) return true;
+  if (navVariant === 'default' && href === '/about' && normalizedCurrentPath === '/about-page') return true;
+  if (navVariant === 'default' && href === '/work' && normalizedCurrentPath === '/portfolio') return true;
+  return false;
+};
 ---
 
 <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
   <button class="mobile-close" id="mobileClose" aria-label="Close menu">
     <i class="fas fa-times"></i>
   </button>
-  {mobileNavigation.map((link) => (
+  {(navVariant === 'gridx' ? mobileNavigationGridx : mobileNavigation).map((link) => (
     <a 
-      href={link.href} 
-      class:list={['mobile-link', { active: currentPath === link.href }]}
+      href={mapHref(link.href)} 
+      class:list={['mobile-link', { active: isActive(link.href) }]}
     >
       {link.name}
     </a>

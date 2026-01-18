@@ -1,22 +1,53 @@
 ---
-import { navigation } from '../data/siteConfig';
+import { navigation, navigationGridx } from '../data/siteConfig';
 
 interface Props {
   currentPath: string;
+  showThemeToggle?: boolean;
+  basePath?: string;
+  navVariant?: 'default' | 'gridx';
 }
 
-const { currentPath } = Astro.props;
+const { currentPath, showThemeToggle = true, basePath = '', navVariant = 'default' } = Astro.props;
+
+const normalizedCurrentPath = currentPath.length > 1 ? currentPath.replace(/\/$/, '') : currentPath;
+const normalizedBasePath = basePath ? basePath.replace(/\/$/, '') : '';
+
+const mapHref = (href: string) => {
+  if (navVariant === 'gridx') {
+    if (href === '/about') href = '/about-page';
+  }
+
+  if (!normalizedBasePath) return href;
+  if (href === '/') return `${normalizedBasePath}/`;
+  return `${normalizedBasePath}${href}`;
+};
+
+const isActive = (href: string) => {
+  const target = mapHref(href);
+  const normalizedTarget = target.length > 1 ? target.replace(/\/$/, '') : target;
+  if (normalizedCurrentPath === normalizedTarget) return true;
+  if (navVariant === 'default' && href === '/about' && normalizedCurrentPath === '/about-page') return true;
+  if (navVariant === 'default' && href === '/work' && normalizedCurrentPath === '/portfolio') return true;
+  return false;
+};
 ---
 
 <header class="gridx-header">
   <div class="header-container">
-    <a href="/" class="header-logo">Tirth Gaudani</a>
+    <a href={mapHref('/')} class="header-logo" aria-label="Home">
+      <span class="logo-mark" aria-hidden="true">
+        <img class="logo-img logo-img--light" src="/img/tg-logo-light.png" alt="" width="44" height="44" loading="eager" decoding="async" />
+        <img class="logo-img logo-img--dark" src="/img/tg-logo-dark.png" alt="" width="44" height="44" loading="eager" decoding="async" />
+      </span>
+      <span class="logo-text">Tirth Gaudani</span>
+    </a>
 
     <nav class="header-nav" aria-label="Main navigation">
-      {navigation.map((link) => (
+      {(navVariant === 'gridx' ? navigationGridx : navigation).map((link) => (
         <a 
-          href={link.href} 
-          class:list={['nav-link', { active: currentPath === link.href }]}
+          href={mapHref(link.href)} 
+          class:list={['nav-link', { active: isActive(link.href) }]}
         >
           {link.name}
         </a>
@@ -24,9 +55,11 @@ const { currentPath } = Astro.props;
     </nav>
 
     <div class="header-right">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <i class="fas fa-moon" id="themeIcon"></i>
-      </button>
+      {showThemeToggle && (
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      )}
     </div>
 
     <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu" aria-expanded="false">
