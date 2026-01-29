@@ -513,9 +513,26 @@ a:hover .card-arrow-css .line,
 /* ==========================================================================
    PROFILE CARD
    ========================================================================== */
+
 .profile-card {
     grid-column: 1;
     grid-row: 1 / 5;
+    padding-bottom: 24px;
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    width: 100%;
+    padding-top: 24px;
+}
+
+.profile-actions .card-arrow {
+    position: static !important;
+    margin: 0;
+    opacity: 1;
 }
 
 .profile-img {
@@ -554,6 +571,92 @@ a:hover .card-arrow-css .line,
     font-size: 15px;
     color: var(--text-gray);
     line-height: 1.7;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(123, 104, 238, 0.2);
+    position: relative;
+    z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.download-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: width 2.5s ease-in-out;
+}
+
+.download-btn.downloading::after {
+    width: 100%;
+}
+
+.download-btn.downloading {
+    cursor: wait;
+    pointer-events: none;
+    padding-right: 32px;
+    /* Adjust for potentially longer text */
+}
+
+.download-btn.success {
+    background: #10B981;
+    border-color: #059669;
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(123, 104, 238, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.download-btn.success:hover {
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+}
+
+.download-btn:active {
+    transform: translateY(-1px);
+}
+
+.download-btn .btn-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-btn .btn-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke-width: 2;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ==========================================================================

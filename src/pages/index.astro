@@ -1,43 +1,50 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CardArrow from '../components/CardArrow.astro';
-import { siteConfig } from '../data/siteConfig';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CardArrow from "../components/CardArrow.astro";
+import { siteConfig } from "../data/siteConfig";
 
 const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
 
-const nameParts = siteConfig.name.split(' ');
+const nameParts = siteConfig.name.split(" ");
 const firstName = nameParts[0] ?? siteConfig.name;
-const lastName = nameParts.slice(1).join(' ');
+const lastName = nameParts.slice(1).join(" ");
 
 // Homepage specific structured data
 const homepageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "mainEntity": {
+  mainEntity: {
     "@type": "Person",
-    "name": siteConfig.name,
-    "url": siteConfig.url,
-    "image": `${siteConfig.url}/img/profile.png`,
-    "sameAs": Object.values(siteConfig.social),
-    "jobTitle": siteConfig.profile.role,
-    "description": pageDescription
-  }
+    name: siteConfig.name,
+    url: siteConfig.url,
+    image: `${siteConfig.url}/img/profile.png`,
+    sameAs: Object.values(siteConfig.social),
+    jobTitle: siteConfig.profile.role,
+    description: pageDescription,
+  },
 };
 ---
 
-<BaseLayout 
-  title={siteConfig.title} 
+<BaseLayout
+  title={siteConfig.title}
   description={pageDescription}
   structuredData={homepageSchema}
 >
   <main class="gridx-main">
     <div class="bento-grid">
-      
       <!-- PROFILE CARD -->
-      <a href="/about" class="bento-card profile-card">
+      <div
+        class="bento-card profile-card"
+        onclick="window.location.href='/about'"
+        role="button"
+        tabindex="0"
+        onkeypress="if(event.key === 'Enter') window.location.href='/about'"
+        aria-label="Go to About Page"
+        style="cursor: pointer;"
+      >
         <div class="profile-img">
-          <img 
-            src="/img/profile.png" 
+          <img
+            src="/img/profile.png"
             alt={`${siteConfig.name} - MERN Stack Developer`}
             width="300"
             height="300"
@@ -46,56 +53,153 @@ const homepageSchema = {
           />
         </div>
         <div class="profile-content">
-          <span class="profile-label">A {siteConfig.profile.role.toUpperCase()}</span>
-          <h1 class="profile-name">{firstName}{lastName ? <br /> : null}{lastName}{lastName ? '.' : ''}</h1>
-          <p class="profile-desc">I am a {siteConfig.profile.role} based in {siteConfig.profile.location}.</p>
+          <span class="profile-label"
+            >A {siteConfig.profile.role.toUpperCase()}</span
+          >
+          <h1 class="profile-name">
+            {firstName}{lastName ? <br /> : null}{lastName}{lastName ? "." : ""}
+          </h1>
+          <p class="profile-desc">
+            I am a {siteConfig.profile.role} based in {
+              siteConfig.profile.location
+            }.
+          </p>
         </div>
-        <CardArrow />
-      </a>
+
+        <div class="profile-actions">
+          <a
+            href="https://drive.google.com/uc?export=download&id=1YK_fuFtL8g7-JYsbf0Z0SORF7iskGhfB"
+            id="download-btn"
+            class="download-btn"
+            onclick="event.stopPropagation()"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download Resume"
+            title="Download Resume"
+          >
+            <span class="btn-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                ></path>
+              </svg>
+            </span>
+            <span class="btn-text">Download CV</span>
+          </a>
+          <script is:inline>
+            (() => {
+              const btn = document.getElementById("download-btn");
+              if (!btn) return;
+
+              const btnText = btn.querySelector(".btn-text");
+              const btnIcon = btn.querySelector(".btn-icon");
+              const originalText = btnText.innerText;
+              const originalIcon = btnIcon.innerHTML;
+
+              btn.addEventListener("click", () => {
+                if (btn.classList.contains("downloading")) return;
+
+                btn.classList.add("downloading");
+                btnText.innerText = "Downloading...";
+                btnIcon.innerHTML = `<svg class="animate-spin" style="animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle style="opacity: 0.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity: 0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+
+                // Simulate download process visual feedback
+                setTimeout(() => {
+                  btn.classList.remove("downloading");
+                  btn.classList.add("success");
+                  btnText.innerText = "Downloaded!";
+                  btnIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9.135-12.375" /></svg>`;
+
+                  // Reset after success message
+                  setTimeout(() => {
+                    btn.classList.remove("success");
+                    btnText.innerText = originalText;
+                    btnIcon.innerHTML = originalIcon;
+                  }, 3000);
+                }, 2500);
+              });
+            })();
+          </script>
+          <CardArrow />
+        </div>
+      </div>
 
       <!-- MARQUEE -->
       <div class="bento-marquee">
         <div class="marquee-track">
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
         </div>
       </div>
 
       <!-- STATS CARD -->
       <div class="bento-card stats-card">
         <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.years} data-prefix="0">0{siteConfig.experience.years}</span>
+          <span
+            class="stat-number"
+            data-count={siteConfig.experience.years}
+            data-prefix="0">0{siteConfig.experience.years}</span
+          >
           <span class="stat-label">YEARS<br />EXPERIENCE</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.clients} data-prefix="+">+{siteConfig.experience.clients}</span>
+          <span
+            class="stat-number"
+            data-count={siteConfig.experience.clients}
+            data-prefix="+">+{siteConfig.experience.clients}</span
+          >
           <span class="stat-label">CLIENTS<br />WORLDWIDE</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number" data-count={siteConfig.experience.projects} data-prefix="+">+{siteConfig.experience.projects}</span>
+          <span
+            class="stat-number"
+            data-count={siteConfig.experience.projects}
+            data-prefix="+">+{siteConfig.experience.projects}</span
+          >
           <span class="stat-label">TOTAL<br />PROJECTS</span>
         </div>
       </div>
 
       <script is:inline>
         (() => {
-          const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const reduceMotion =
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
           if (reduceMotion) return;
 
-          const card = document.querySelector('.stats-card');
+          const card = document.querySelector(".stats-card");
           if (!card) return;
 
-          const numbers = Array.from(card.querySelectorAll('.stat-number'));
+          const numbers = Array.from(card.querySelectorAll(".stat-number"));
           if (numbers.length === 0) return;
 
           const animateNumber = (el) => {
-            const targetRaw = el.getAttribute('data-count');
-            const prefix = el.getAttribute('data-prefix') || '';
-            const format = el.getAttribute('data-format') || '';
+            const targetRaw = el.getAttribute("data-count");
+            const prefix = el.getAttribute("data-prefix") || "";
+            const format = el.getAttribute("data-format") || "";
 
             const target = Number(targetRaw);
             if (!Number.isFinite(target)) return;
@@ -105,7 +209,7 @@ const homepageSchema = {
             const from = 0;
 
             const formatValue = (value) => {
-              if (format === 'pad2') return String(value).padStart(2, '0');
+              if (format === "pad2") return String(value).padStart(2, "0");
               return String(value);
             };
 
@@ -129,7 +233,7 @@ const homepageSchema = {
                 break;
               }
             },
-            { threshold: 0.35 }
+            { threshold: 0.35 },
           );
 
           io.observe(card);
@@ -140,10 +244,10 @@ const homepageSchema = {
       <a href="/work" class="bento-card projects-card">
         <div class="projects-inner">
           <div class="project-preview">
-            <img 
-              src="/img/my-works.png" 
-              alt="My Works" 
-              width="300" 
+            <img
+              src="/img/my-works.png"
+              alt="My Works"
+              width="300"
               height="200"
               loading="lazy"
               decoding="async"
@@ -175,10 +279,18 @@ const homepageSchema = {
       <!-- SERVICES CARD -->
       <a href="/about" class="bento-card services-card">
         <div class="services-icons">
-          <div class="service-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-font" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-cubes" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+          <div class="service-icon">
+            <i class="fas fa-camera" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-font" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-cubes" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-code" aria-hidden="true"></i>
+          </div>
         </div>
         <div class="card-bottom">
           <span class="card-label">SPECIALIZATION</span>
@@ -190,10 +302,22 @@ const homepageSchema = {
       <!-- PROFILES CARD -->
       <div class="bento-card profiles-card">
         <div class="profiles-icons">
-          <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="LinkedIn">
+          <a
+            href={siteConfig.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="profile-icon"
+            aria-label="LinkedIn"
+          >
             <i class="fab fa-linkedin-in" aria-hidden="true"></i>
           </a>
-          <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="GitHub">
+          <a
+            href={siteConfig.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="profile-icon"
+            aria-label="GitHub"
+          >
             <i class="fab fa-github" aria-hidden="true"></i>
           </a>
         </div>
@@ -207,14 +331,29 @@ const homepageSchema = {
       <!-- EXPERTISE CARD -->
       <div class="bento-card expertise-card">
         <div class="expertise-grid" role="list" aria-label="Expertise">
-          {siteConfig.expertise.map((item) => (
-            <div class="expertise-item" role="listitem" title={item.name} aria-label={item.name}>
-              <span class="expertise-icon" aria-hidden="true">
-                <img class="expertise-img" src={item.iconSrc} alt="" width="30" height="30" loading="lazy" decoding="async" />
-              </span>
-              <span class="expertise-name">{item.name}</span>
-            </div>
-          ))}
+          {
+            siteConfig.expertise.map((item) => (
+              <div
+                class="expertise-item"
+                role="listitem"
+                title={item.name}
+                aria-label={item.name}
+              >
+                <span class="expertise-icon" aria-hidden="true">
+                  <img
+                    class="expertise-img"
+                    src={item.iconSrc}
+                    alt=""
+                    width="30"
+                    height="30"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span class="expertise-name">{item.name}</span>
+              </div>
+            ))
+          }
         </div>
         <div class="card-bottom">
           <span class="card-label">EXPERTISE</span>
@@ -222,13 +361,11 @@ const homepageSchema = {
         </div>
       </div>
 
-
       <!-- CTA CARD -->
       <!-- <a href="/contact" class="bento-card cta-card">
         <h3 class="cta-text">Let's<br />work <span>together.</span></h3>
         <CardArrow />
       </a> -->
-
     </div>
   </main>
 </BaseLayout>
