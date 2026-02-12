@@ -1,68 +1,140 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CardArrow from '../components/CardArrow.astro';
-import { siteConfig, projects } from '../data/siteConfig';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { siteConfig, projects } from "../data/siteConfig";
 
-const pageTitle = `Works - ${siteConfig.name} | My Projects`;
+const pageTitle = `Works`;
 const pageDescription = `Explore ${siteConfig.name}'s portfolio of web development projects including React, Node.js, MongoDB, and full-stack applications.`;
 
 const workSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": `Works - ${siteConfig.name}`,
-  "description": pageDescription,
-  "url": `${siteConfig.url}/work`,
-  "mainEntity": {
+  name: `${pageTitle} | Projects | MERN Stack Developer | ${siteConfig.name}`,
+  description: pageDescription,
+  url: `${siteConfig.url}/work`,
+  mainEntity: {
     "@type": "ItemList",
-    "itemListElement": projects.map((project, index) => ({
+    itemListElement: projects.map((project, index) => ({
       "@type": "CreativeWork",
-      "position": index + 1,
-      "name": project.title,
-      "description": project.category,
-      "url": project.link
-    }))
-  }
+      position: index + 1,
+      name: project.title,
+      description: project.description,
+      url: `${siteConfig.url}/work/${project.slug}`,
+    })),
+  },
 };
 ---
 
-<BaseLayout 
-  title={pageTitle} 
+<BaseLayout
+  title={pageTitle}
   description={pageDescription}
   structuredData={workSchema}
 >
   <main class="gridx-main page-full">
-
-    <h1 class="page-title">
-      <span class="star-icon">✸</span>ALL PROJECTS<span class="star-icon">✸</span>
-    </h1>
-
-    <section class="works-grid" aria-label="Projects Gallery">
-      {projects.map((project) => (
-        <a 
-          href={project.link} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class:list={["work-card", { 'work-large': project.large }]}
+    <div class="work-header">
+      <h1 class="page-title">
+        <span class="star-icon">✸</span> SELECTED WORKS <span class="star-icon"
+          >✸</span
         >
-          <div class="work-image" style={`background: ${project.gradient};`}>
-            <img 
-              src={project.image} 
-              alt={project.title}
-              width="400"
-              height="400"
-              loading="lazy"
-              decoding="async"
-              onerror="this.style.display='none'"
-            />
-          </div>
-          <div class="work-info">
-            <span class="work-category">{project.category}</span>
-            <h3 class="work-title">{project.title}</h3>
-          </div>
-          <CardArrow />
-        </a>
-      ))}
-    </section>
+      </h1>
+      <p class="page-subtitle">
+        A collection of projects attempting to solve real-world problems with
+        code and design.
+      </p>
+    </div>
 
+    <section class="works-grid-container" aria-label="Projects Gallery">
+      {
+        projects.map((project) => (
+          <ProjectCard
+            title={project.title}
+            category={project.category}
+            image={project.image}
+            slug={project.slug}
+            gradient={project.gradient}
+            large={!!project.large}
+          />
+        ))
+      }
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .work-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .star-icon {
+    font-size: 0.6em;
+    color: var(--accent);
+    animation: spin 10s linear infinite;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .works-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    animation: slideUp 0.8s ease-out 0.2s backwards;
+  }
+
+  @media (max-width: 1024px) {
+    .works-grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .works-grid-container {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

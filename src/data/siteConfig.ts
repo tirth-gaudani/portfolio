@@ -1,4 +1,16 @@
 // Site Configuration - Centralized data for SEO and content
+import type { ImageMetadata } from 'astro';
+import trailverseCard from '../assets/img/trailverse-card.png';
+import trailverseHero from '../assets/img/trailverse-hero.png';
+import clothingCard from '../assets/img/clothing-card.png';
+import clothingHero from '../assets/img/clothing-hero.png';
+import vpnCard from '../assets/img/vpn-card.png';
+import vpnHero from '../assets/img/vpn-hero.png';
+import onlineShopCard from '../assets/img/online-shop-card.png';
+import onlineShopHero from '../assets/img/online-shop-hero.png';
+import foodOrderCard from '../assets/img/food-order-card.png';
+import foodOrderHero from '../assets/img/food-order-hero.png';
+import studentWorksheetCard from '../assets/img/student-worksheet-card.png';
 export const siteConfig = {
     name: 'Tirth Gaudani',
     title: 'Tirth Gaudani - Top Rated MERN Stack Developer in India',
@@ -100,68 +112,113 @@ export const mobileNavigationGridx = [
 
 export const projects = [
     {
-        title: 'VPN Application',
-        category: 'WEB DESIGN',
-        image: '/img/project-1.png',
+        title: 'TrailVerse',
+        slug: 'trailverse',
+        category: 'FULL STACK DEVELOPMENT',
+        image: trailverseCard,
+        heroImage: trailverseHero,
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%)',
+        gradient: 'linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%)',
         large: true,
+        description: 'A smart adventure and experience booking platform. Users can explore, filter, and book curated outdoor activities. Includes a role-based system for organizers to manage listings and an admin dashboard.',
+        technologies: ['Next.js', 'PostgreSQL', 'Express', 'Node.js'],
+        features: [
+            'Curated adventure listings',
+            'Role-based access control (Admin/Organizer)',
+            'Real-time booking management',
+            'SEO-friendly Next.js frontend',
+            'Optimized RESTful APIs'
+        ]
+    },
+    {
+        title: 'Clothing Purchase App',
+        slug: 'clothing-purchase-app',
+        category: 'BACK-END DEVELOPER',
+        image: clothingCard,
+        heroImage: clothingHero,
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #fff5f5 0%, #fed7e2 100%)',
+        description: 'A comprehensive e-commerce solution for clothing vendors. Features a robust backend for handling high traffic, a React.js admin portal, and real-time chat between vendors and users.',
+        technologies: ['Node.js', 'Express', 'MySQL', 'React.js', 'Socket.io'],
+        features: [
+            'Scalable Admin & Vendor portals',
+            'Real-time chat with Socket.io',
+            'Optimized RESTful APIs',
+            'Inventory and Order management',
+            'Cross-platform mobile support'
+        ]
+    },
+    {
+        title: 'VPN Application',
+        slug: 'vpn-application',
+        category: 'WEB DESIGN',
+        image: vpnCard,
+        heroImage: vpnHero,
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%)',
+        description: 'A secure and fast VPN application designed to protect user privacy and bypass geo-restrictions. Features a modern, intuitive interface with real-time connection stats.',
+        technologies: ['React', 'Electron', 'Node.js', 'OpenVPN'],
+        features: [
+            'Military-grade encryption',
+            'No-logs policy',
+            'Kill switch functionality',
+            'Multi-platform support',
+            'Split tunneling'
+        ]
+    },
+    {
+        title: 'Online Purchase App',
+        slug: 'online-purchase-app',
+        category: 'BACK-END DEVELOPER',
+        image: onlineShopCard,
+        heroImage: onlineShopHero,
+        link: 'https://github.com/tirth-gaudani',
+        gradient: 'linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%)',
+        description: 'A futuristic e-commerce platform with automated product data scraping and intelligent delivery tracking. Features a high-tech UI with holographic elements and secure crypto payment options.',
+        technologies: ['Node.js', 'Express', 'MySQL', 'CI/CD'],
+        features: [
+            'Amazon product data scraping',
+            'Scheduled jobs & Notifications',
+            'Text Local SMS integration',
+            'Product delivery tracking system',
+            'High-performance database design'
+        ]
     },
     {
         title: 'Food Order System',
-        category: 'MOBILE DESIGN',
-        image: '/img/project-2.png',
+        slug: 'food-order-system',
+        category: 'WEB & MOBILE APP',
+        image: foodOrderCard,
+        heroImage: foodOrderHero,
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e8e8ff 0%, #d8d8ff 100%)',
+        gradient: 'linear-gradient(135deg, #fff5e6 0%, #ffe0b3 100%)',
+        description: 'A complete food ordering solution for school lunches. Features a student ordering portal, a teacher management panel, and a vendor dashboard for seamless lunch operations.',
+        technologies: ['Node.js', 'Express', 'MySQL', 'React.js'],
+        features: [
+            'Student lunch ordering portal',
+            'Teacher management panel',
+            'Vendor dashboard',
+            'Seamless data synchronization',
+            'Efficient order processing'
+        ]
     },
     {
         title: 'Student Worksheet',
-        category: 'BRANDING',
-        image: '/img/project-3.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e8f0f8 0%, #d0e0f0 100%)',
-    },
-    {
-        title: 'Clothing E-Commerce',
-        category: 'BACK-END DEVELOPMENT',
-        image: '/img/project-4.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #fff8e8 0%, #ffeed0 100%)',
-    },
-    {
-        title: 'Online E-Commerce',
-        category: 'FRONT-END DEVELOPMENT',
-        image: '/img/project-5.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e8f5ff 0%, #d0ebff 100%)',
-    },
-    {
-        title: 'Mobile App',
+        slug: 'student-worksheet',
         category: 'FULL STACK DEVELOPMENT',
-        image: '/img/project-6.png',
+        image: studentWorksheetCard,
+        heroImage: studentWorksheetCard,
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e8ffe8 0%, #d0ffd0 100%)',
-    },
-    {
-        title: 'SaaS Dashboard',
-        category: 'DASHBOARD DESIGN',
-        image: '/img/project-1.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)',
-    },
-    {
-        title: 'Social Media App',
-        category: 'APP DEVELOPMENT',
-        image: '/img/project-2.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #d0f0c0 0%, #c0e0b0 100%)',
-    },
-    {
-        title: 'Portfolio V1',
-        category: 'WEB DEVELOPMENT',
-        image: '/img/project-3.png',
-        link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e0c0ff 0%, #d0b0ff 100%)',
+        gradient: 'linear-gradient(135deg, #e6f7ff 0%, #b3e0ff 100%)',
+        description: 'An interactive web application for creating educational worksheets. Features a "Canva-like" drag-and-drop interface for teachers to design custom worksheets with text, images, and drawings.',
+        technologies: ['Node.js', 'Express', 'MySQL', 'React.js'],
+        features: [
+            'Drag-and-drop worksheet builder',
+            'Canvas drawing capabilities',
+            'Teacher resource panel',
+            'Image and text manipulation',
+            'RESTful API integration'
+        ]
     }
 ];
 

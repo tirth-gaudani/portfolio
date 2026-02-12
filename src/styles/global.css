@@ -837,7 +837,7 @@ html:not(.dark) .card-signature img {
    PROFILES CARD
    ========================================================================== */
 .profiles-card {
-    grid-column: 3;
+    grid-column: 2;
     grid-row: 4;
 }
 

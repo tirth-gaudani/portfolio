@@ -1,0 +1,422 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/siteConfig";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+    return projects.map((project) => ({
+        params: { slug: project.slug },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+
+if (!project) {
+    return Astro.redirect("/404");
+}
+
+const pageTitle = `${project.title} | Work`;
+const pageDescription = project.description;
+---
+
+<BaseLayout
+    title={pageTitle}
+    description={pageDescription}
+    ogImage={project.heroImage || project.image}
+>
+    <main class="gridx-main page-full">
+        <div class="bento-grid project-grid">
+            {/* 1. HEADER CARD (Full Width) */}
+            <div class="bento-card header-card">
+                <div class="header-left">
+                    <a href="/work" class="nav-btn" aria-label="Back">
+                        <div class="icon-circle">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m15 18-6-6 6-6"></path></svg
+                            >
+                        </div>
+                    </a>
+                    <div class="title-block">
+                        <div class="meta-row">
+                            <span class="card-label">{project.category}</span>
+                            <span class="status-tag">Live</span>
+                        </div>
+                        <h1 class="project-title">{project.title}</h1>
+                    </div>
+                </div>
+            </div>
+
+            {/* 2. HERO IMAGE CARD (Column 1) */}
+            <div
+                class="bento-card hero-card"
+                style={`--accent-color: ${project.gradient}`}
+            >
+                <div class="hero-inner">
+                    <Image
+                        src={project.heroImage || project.image}
+                        alt={project.title}
+                        class="project-img"
+                        loading="eager"
+                        decoding="async"
+                    />
+                </div>
+            </div>
+
+            {/* 3. INFO SIDEBAR (Column 2) */}
+            <div class="bento-card info-card">
+                <div class="info-section">
+                    <span class="card-label">TECHNOLOGIES</span>
+                    <div class="tech-wrap">
+                        {
+                            project.technologies?.map((tech) => (
+                                <span class="tech-item">{tech}</span>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div class="info-divider"></div>
+
+                <div class="info-section">
+                    <span class="card-label">PROJECT TYPE</span>
+                    <h3 class="info-value">{project.category}</h3>
+                </div>
+            </div>
+
+            {/* 4. FEATURES CARD (Column 3) */}
+            <div class="bento-card features-card">
+                <span class="card-label">HIGHLIGHTS</span>
+                <h3 class="section-title">Key Features</h3>
+                <ul class="features-list">
+                    {
+                        project.features?.slice(0, 4).map(
+                            (
+                                feature, // Limit to 4 to fit nicely
+                            ) => (
+                                <li>
+                                    <span class="bullet">•</span> {feature}
+                                </li>
+                            ),
+                        )
+                    }
+                </ul>
+            </div>
+
+            {/* 5. DETAILS CONTENT (Full Width) */}
+            <div class="bento-card details-card">
+                <div class="description-section">
+                    <span class="card-label">OVERVIEW</span>
+                    <h3 class="section-title">About the Project</h3>
+                    <p class="project-desc">{project.description}</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    /* CUSTOM GRID FOR PROJECT PAGE - 3 Column Layout */
+    .project-grid {
+        /* Override global .bento-grid columns */
+        grid-template-columns: 1.4fr 0.8fr 0.8fr; /* Image wider, others equal */
+        grid-template-rows: auto auto auto;
+        gap: 24px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* 1. HEADER CARD */
+    .header-card {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: start; /* Center align items vertically */
+        justify-content: space-between;
+        padding: 30px 40px;
+        min-height: 100px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-gray);
+        transition: var(--transition);
+    }
+
+    .icon-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-body);
+        transition: var(--transition);
+    }
+
+    .nav-btn:hover .icon-circle {
+        background: var(--text-white);
+        color: var(--bg-body);
+        transform: scale(1.1);
+    }
+
+    .title-block {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .status-tag {
+        font-size: 10px;
+        font-weight: 700;
+        color: #10b981;
+        text-transform: uppercase;
+        background: rgba(16, 185, 129, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+
+    .project-title {
+        font-size: 32px;
+        font-weight: 600;
+        color: var(--text-white);
+        margin: 0;
+        line-height: 1.1;
+    }
+
+    .visit-btn {
+        padding: 12px 24px;
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        border-radius: 30px;
+        color: var(--text-white);
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: var(--transition);
+    }
+
+    .visit-btn:hover {
+        background: var(--text-white);
+        color: var(--bg-body);
+        transform: translateY(-2px);
+    }
+
+    /* 2. HERO CARD */
+    .hero-card {
+        grid-column: 1 / 2;
+        padding: 0;
+        overflow: hidden;
+        height: 290px;
+        position: relative;
+    }
+
+    .hero-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--accent-color);
+        opacity: 0.1;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+    }
+
+    .hero-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+    }
+
+    .hero-card:hover .project-img {
+        transform: scale(1.05);
+    }
+
+    /* 3. INFO CARD */
+    .info-card {
+        grid-column: 2 / 3;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .tech-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tech-item {
+        font-size: 12px;
+        color: var(--text-gray);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        transition: var(--transition);
+    }
+
+    .info-card:hover .tech-item {
+        border-color: var(--border-color);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .info-divider {
+        height: 1px;
+        background: var(--border-color);
+        width: 100%;
+    }
+
+    .info-value {
+        font-size: 16px;
+        color: var(--text-white);
+        font-weight: 500;
+    }
+
+    /* 4. FEATURES CARD */
+    .features-card {
+        grid-column: 3 / 4;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .features-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .features-list li {
+        color: var(--text-gray);
+        font-size: 14px;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        line-height: 1.4;
+    }
+
+    .bullet {
+        color: var(--accent);
+        font-size: 14px;
+    }
+
+    /* 5. DETAILS CARD */
+    .details-card {
+        grid-column: 1 / -1;
+    }
+
+    .description-section {
+        max-width: 800px;
+    }
+
+    .section-title {
+        font-size: 20px; /* Matched to global h3 roughly */
+        color: var(--text-white);
+        margin: 8px 0 12px 0;
+        font-weight: 600;
+    }
+
+    .project-desc {
+        font-size: 16px;
+        color: var(--text-gray);
+        line-height: 1.7;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+        .project-grid {
+            grid-template-columns: 1fr 1fr; /* 2 col on tablet */
+        }
+
+        .hero-card {
+            grid-column: 1 / -1;
+            height: 300px;
+        }
+        .info-card {
+            grid-column: 1 / 2;
+        }
+        .features-card {
+            grid-column: 2 / 3;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .project-grid {
+            grid-template-columns: 1fr; /* 1 col on mobile */
+        }
+
+        .header-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+        }
+
+        .hero-card {
+            height: 250px;
+        }
+        .info-card,
+        .features-card {
+            grid-column: 1 / -1;
+        }
+
+        .header-right {
+            align-self: flex-start;
+        }
+
+        .project-title {
+            font-size: 28px;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

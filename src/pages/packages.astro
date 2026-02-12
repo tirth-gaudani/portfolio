@@ -61,3 +61,29 @@ const packagesSchema = {
 
   </main>
 </BaseLayout>
+
+<style>
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .star-icon {
+    font-size: 0.6em;
+    color: var(--accent);
+    animation: spin 10s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

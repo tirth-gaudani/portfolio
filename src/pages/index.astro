@@ -2,6 +2,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CardArrow from "../components/CardArrow.astro";
 import { siteConfig } from "../data/siteConfig";
+import { Image } from "astro:assets";
+import profileDark from "../assets/img/profile-dark.png";
+import profileLight from "../assets/img/profile-light.png";
+import myWorksCollage from "../assets/img/my-works-collage.png";
+import profileOg from "../assets/img/profile.png";
 
 const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
 
@@ -29,6 +34,7 @@ const homepageSchema = {
   title={siteConfig.title}
   description={pageDescription}
   structuredData={homepageSchema}
+  ogImage={profileOg}
 >
   <main class="gridx-main">
     <div class="bento-grid">
@@ -40,17 +46,29 @@ const homepageSchema = {
         tabindex="0"
         onkeypress="if(event.key === 'Enter') window.location.href='/about'"
         aria-label="Go to About Page"
-        style="cursor: pointer;"
+        onkeydown="if(event.key === 'Enter' || event.key === ' ') window.location.href='/about'"
       >
         <div class="profile-img">
-          <img
-            src="/img/profile.png"
-            alt={`${siteConfig.name} - MERN Stack Developer`}
-            width="300"
-            height="300"
-            loading="eager"
-            decoding="async"
-          />
+          <div class="profile-img">
+            <Image
+              src={profileDark}
+              alt={`${siteConfig.name} - MERN Stack Developer`}
+              width={300}
+              height={300}
+              loading="eager"
+              decoding="async"
+              class="logo-img--dark"
+            />
+            <Image
+              src={profileLight}
+              alt={`${siteConfig.name} - MERN Stack Developer`}
+              width={300}
+              height={300}
+              loading="eager"
+              decoding="async"
+              class="logo-img--light"
+            />
+          </div>
         </div>
         <div class="profile-content">
           <span class="profile-label"
@@ -244,14 +262,17 @@ const homepageSchema = {
       <a href="/work" class="bento-card projects-card">
         <div class="projects-inner">
           <div class="project-preview">
-            <img
-              src="/img/my-works.png"
-              alt="My Works"
-              width="300"
-              height="200"
+            <Image
+              src={myWorksCollage}
+              alt="My Works Showcase"
+              width={600}
+              height={400}
               loading="lazy"
               decoding="async"
-              onerror="this.parentElement.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'"
+              class="showcase-img"
+              style={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              }}
             />
           </div>
           <div class="project-info">
@@ -272,29 +293,6 @@ const homepageSchema = {
         <div class="card-bottom">
           <span class="card-label">NPM</span>
           <h3 class="card-title">Packages</h3>
-        </div>
-        <CardArrow />
-      </a>
-
-      <!-- SERVICES CARD -->
-      <a href="/about" class="bento-card services-card">
-        <div class="services-icons">
-          <div class="service-icon">
-            <i class="fas fa-camera" aria-hidden="true"></i>
-          </div>
-          <div class="service-icon">
-            <i class="fas fa-font" aria-hidden="true"></i>
-          </div>
-          <div class="service-icon">
-            <i class="fas fa-cubes" aria-hidden="true"></i>
-          </div>
-          <div class="service-icon">
-            <i class="fas fa-code" aria-hidden="true"></i>
-          </div>
-        </div>
-        <div class="card-bottom">
-          <span class="card-label">SPECIALIZATION</span>
-          <h3 class="card-title">Services Offering</h3>
         </div>
         <CardArrow />
       </a>
@@ -369,3 +367,17 @@ const homepageSchema = {
     </div>
   </main>
 </BaseLayout>
+<style>
+  .star {
+    animation: spin 10s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

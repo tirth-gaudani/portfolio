@@ -1,21 +1,23 @@
 ---
-import { siteConfig } from '../data/siteConfig';
+import { siteConfig } from "../data/siteConfig";
 
 interface Props {
   basePath?: string;
 }
 
-const { basePath = '' } = Astro.props;
+const { basePath = "" } = Astro.props;
 
-const normalizedBasePath = basePath ? basePath.replace(/\/$/, '') : '';
+const normalizedBasePath = basePath ? basePath.replace(/\/$/, "") : "";
 
 const mapHref = (href: string) => {
   if (!normalizedBasePath) return href;
-  if (href === '/') return `${normalizedBasePath}/`;
+  if (href === "/") return `${normalizedBasePath}/`;
   return `${normalizedBasePath}${href}`;
 };
 ---
 
 <footer class="gridx-footer">
-  <p class="footer-copy">© All rights reserved by <a href={mapHref('/')}>{siteConfig.name}</a></p>
+  <p class="footer-copy">
+    © All rights reserved by <a href={mapHref("/")}>{siteConfig.name}</a>
+  </p>
 </footer>
