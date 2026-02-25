@@ -4,7 +4,7 @@ import { siteConfig, experience, education } from "../data/siteConfig";
 import { Image } from "astro:assets";
 import profileDark from "../assets/img/profile-dark.png";
 import profileLight from "../assets/img/profile-light.png";
-import profileOg from "../assets/img/profile.png";
+import profileOg from "../assets/img/profile-light.png";
 
 const pageTitle = `About - ${siteConfig.name} | ${siteConfig.profile.role}`;
 const pageDescription = `Learn about ${siteConfig.name}, a passionate MERN Stack Developer with expertise in React, Node.js, MongoDB, and Express.js. View experience, education, and skills.`;
@@ -20,7 +20,7 @@ const aboutSchema = {
     name: siteConfig.name,
     jobTitle: siteConfig.profile.role,
     description: siteConfig.profile.aboutSummary,
-    image: `${siteConfig.url}/img/profile.png`,
+    image: `${siteConfig.url}/img/profile-light.png`,
     url: `${siteConfig.url}/about`,
     sameAs: Object.values(siteConfig.social),
   },

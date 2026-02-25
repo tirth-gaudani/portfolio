@@ -1,41 +1,40 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CardArrow from '../../components/CardArrow.astro';
-import { siteConfig } from '../../data/siteConfig';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CardArrow from "../../components/CardArrow.astro";
+import { siteConfig } from "../../data/siteConfig";
 
 const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
 
-const nameParts = siteConfig.name.split(' ');
+const nameParts = siteConfig.name.split(" ");
 const firstName = nameParts[0] ?? siteConfig.name;
-const lastName = nameParts.slice(1).join(' ');
+const lastName = nameParts.slice(1).join(" ");
 
 const homepageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "mainEntity": {
+  mainEntity: {
     "@type": "Person",
-    "name": siteConfig.name,
-    "url": `${siteConfig.url}/gridxlight/`,
-    "image": `${siteConfig.url}/img/profile.png`,
-    "sameAs": Object.values(siteConfig.social),
-    "jobTitle": siteConfig.profile.role,
-    "description": pageDescription
-  }
+    name: siteConfig.name,
+    url: `${siteConfig.url}/gridxlight/`,
+    image: `${siteConfig.url}/img/profile-light.png`,
+    sameAs: Object.values(siteConfig.social),
+    jobTitle: siteConfig.profile.role,
+    description: pageDescription,
+  },
 };
 ---
 
-<BaseLayout 
-  title={siteConfig.title} 
+<BaseLayout
+  title={siteConfig.title}
   description={pageDescription}
   structuredData={homepageSchema}
 >
   <main class="gridx-main">
     <div class="bento-grid">
-
       <a href="/gridxlight/about-page" class="bento-card profile-card">
         <div class="profile-img">
-          <img 
-            src="/img/profile.png" 
+          <img
+            src="/img/profile-light.png"
             alt={`${siteConfig.name} - MERN Stack Developer`}
             width="300"
             height="300"
@@ -44,30 +43,50 @@ const homepageSchema = {
           />
         </div>
         <div class="profile-content">
-          <span class="profile-label">A {siteConfig.profile.role.toUpperCase()}</span>
-          <h1 class="profile-name">{firstName}{lastName ? <br /> : null}{lastName}{lastName ? '.' : ''}</h1>
-          <p class="profile-desc">I am a {siteConfig.profile.role} based in {siteConfig.profile.location}.</p>
+          <span class="profile-label"
+            >A {siteConfig.profile.role.toUpperCase()}</span
+          >
+          <h1 class="profile-name">
+            {firstName}{lastName ? <br /> : null}{lastName}{lastName ? "." : ""}
+          </h1>
+          <p class="profile-desc">
+            I am a {siteConfig.profile.role} based in {
+              siteConfig.profile.location
+            }.
+          </p>
         </div>
         <CardArrow />
       </a>
 
       <div class="bento-marquee">
         <div class="marquee-track">
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
-          <span>LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span>
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
+          <span
+            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
+          >
         </div>
       </div>
 
       <a href="/gridxlight/about-page" class="bento-card credentials-card">
         <div class="card-signature">
-          <img 
-            src="/img/sign.png" 
-            alt="Signature" 
-            width="150" 
+          <img
+            src="/img/sign.png"
+            alt="Signature"
+            width="150"
             height="70"
             loading="lazy"
             decoding="async"
@@ -84,10 +103,10 @@ const homepageSchema = {
       <a href="/gridxlight/work" class="bento-card projects-card">
         <div class="projects-inner">
           <div class="project-preview">
-            <img 
-              src="/img/my-works.png" 
-              alt="My Works" 
-              width="300" 
+            <img
+              src="/img/my-works.png"
+              alt="My Works"
+              width="300"
               height="200"
               loading="lazy"
               decoding="async"
@@ -117,10 +136,18 @@ const homepageSchema = {
 
       <a href="/gridxlight/about-page" class="bento-card services-card">
         <div class="services-icons">
-          <div class="service-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-font" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-cubes" aria-hidden="true"></i></div>
-          <div class="service-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+          <div class="service-icon">
+            <i class="fas fa-camera" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-font" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-cubes" aria-hidden="true"></i>
+          </div>
+          <div class="service-icon">
+            <i class="fas fa-code" aria-hidden="true"></i>
+          </div>
         </div>
         <div class="card-bottom">
           <span class="card-label">SPECIALIZATION</span>
@@ -131,10 +158,22 @@ const homepageSchema = {
 
       <div class="bento-card profiles-card">
         <div class="profiles-icons">
-          <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="LinkedIn">
+          <a
+            href={siteConfig.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="profile-icon"
+            aria-label="LinkedIn"
+          >
             <i class="fab fa-linkedin-in" aria-hidden="true"></i>
           </a>
-          <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="profile-icon" aria-label="GitHub">
+          <a
+            href={siteConfig.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="profile-icon"
+            aria-label="GitHub"
+          >
             <i class="fab fa-github" aria-hidden="true"></i>
           </a>
         </div>
@@ -164,7 +203,6 @@ const homepageSchema = {
         <h3 class="cta-text">Let's<br />work <span>together.</span></h3>
         <CardArrow />
       </a>
-
     </div>
   </main>
 </BaseLayout>

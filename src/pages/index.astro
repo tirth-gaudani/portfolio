@@ -6,7 +6,7 @@ import { Image } from "astro:assets";
 import profileDark from "../assets/img/profile-dark.png";
 import profileLight from "../assets/img/profile-light.png";
 import myWorksCollage from "../assets/img/my-works-collage.png";
-import profileOg from "../assets/img/profile.png";
+import profileOg from "../assets/img/profile-light.png";
 
 const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
 
@@ -22,7 +22,7 @@ const homepageSchema = {
     "@type": "Person",
     name: siteConfig.name,
     url: siteConfig.url,
-    image: `${siteConfig.url}/img/profile.png`,
+    image: `${siteConfig.url}/img/profile-light.png`,
     sameAs: Object.values(siteConfig.social),
     jobTitle: siteConfig.profile.role,
     description: pageDescription,

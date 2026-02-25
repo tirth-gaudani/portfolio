@@ -22,7 +22,7 @@ const {
   title,
   description,
   canonicalURL = Astro.url.href,
-  ogImage = "/img/profile.png",
+  ogImage = "/img/profile-light.png",
   ogImageAlt = title,
   ogType = "website",
   structuredData,
@@ -57,7 +57,7 @@ const defaultStructuredData = {
   "@type": "Person",
   name: siteConfig.name,
   url: siteConfig.url,
-  image: `${siteConfig.url}/img/profile.png`,
+  image: `${siteConfig.url}/img/profile-light.png`,
   sameAs: [siteConfig.social.linkedin, siteConfig.social.github],
   jobTitle: siteConfig.profile.role,
   worksFor: {
