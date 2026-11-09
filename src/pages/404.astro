@@ -1,29 +1,27 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig } from '../data/siteConfig';
-
-const pageTitle = '404 - Page Not Found';
-const pageDescription = 'The page you are looking for could not be found. Return to the homepage to explore the portfolio.';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { pages } from "../data/siteConfig";
 ---
 
-<BaseLayout 
-  title={pageTitle} 
-  description={pageDescription}
->
-  <main class="gridx-main page-full" style="text-align: center; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    
-    <h1 class="page-title" style="margin-bottom: 30px;">
-      <span class="star-icon">✸</span>404<span class="star-icon">✸</span>
-    </h1>
-    
-    <p style="font-size: 18px; color: var(--text-gray); margin-bottom: 40px; max-width: 500px;">
-      Oops! The page you're looking for doesn't exist or has been moved.
-    </p>
-    
-    <a href="/" class="btn-talk" style="display: inline-flex; align-items: center; gap: 10px;">
-      <i class="fas fa-home" aria-hidden="true"></i>
-      Back to Home
-    </a>
-
+<BaseLayout {...pages.notFound} noindex>
+  <main id="main" class="container">
+    <section class="page-hero lost">
+      <div class="big404 glass" data-tilt aria-hidden="true"><span class="grad-text">404</span></div>
+      <h1>Lost in space.</h1>
+      <p>The page you're looking for doesn't exist or has moved.</p>
+      <a href="/" class="btn btn-primary"><Icon name="home" size={18} /> Back to home</a>
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .lost { min-height: 60vh; align-content: center; }
+  .lost h1 { font-size: clamp(32px, 5vw, 52px); }
+  .big404 {
+    padding: 10px 40px;
+    border-radius: var(--r-xl);
+    font: 800 clamp(96px, 20vw, 200px) / 1 var(--font-h);
+    letter-spacing: -0.06em;
+  }
+</style>

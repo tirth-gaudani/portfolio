@@ -1,0 +1,53 @@
+---
+// Inline SVG icon set — replaces Font Awesome (no external CSS/font download).
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  class?: string;
+}
+
+const brand = (d: string) => ({ fill: true, body: `<path d="${d}"/>` });
+const line = (body: string) => ({ fill: false, body });
+
+const icons = {
+  github: brand(
+    "M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3",
+  ),
+  linkedin: brand(
+    "M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z",
+  ),
+  npm: brand(
+    "M1.76 0A1.76 1.76 0 0 0 0 1.76v20.48C0 23.21.79 24 1.76 24h20.48c.97 0 1.76-.79 1.76-1.76V1.76C24 .79 23.21 0 22.24 0ZM5.13 5.32l13.84.02-.01 13.84H15.5l.01-10.39h-3.46l-.01 10.38H5.11Z",
+  ),
+  sparkle: brand("M12 1c.6 6 3.4 9.6 11 11-7.6 1.4-10.4 5-11 11-.6-6-3.4-9.6-11-11C8.6 10.6 11.4 7 12 1Z"),
+  sun: line('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/>'),
+  moon: line('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
+  menu: line('<path d="M4 7h16M4 12h16M4 17h10"/>'),
+  close: line('<path d="M18 6 6 18M6 6l12 12"/>'),
+  arrow: line('<path d="M7 17 17 7M8 7h9v9"/>'),
+  back: line('<path d="m12 19-7-7 7-7M19 12H5"/>'),
+  download: line('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'),
+  mail: line('<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-10 6L2 7"/>'),
+  pin: line('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'),
+  check: line('<path d="M20 6 9 17l-5-5"/>'),
+  send: line('<path d="m22 2-7 20-4-9-9-4ZM22 2 11 13"/>'),
+  home: line('<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/>'),
+};
+
+const { name, size = 20, class: className } = Astro.props;
+const icon = icons[name];
+---
+
+<svg
+  class:list={["icon", className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill={icon.fill ? "currentColor" : "none"}
+  stroke={icon.fill ? undefined : "currentColor"}
+  stroke-width={icon.fill ? undefined : 2}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icon.body}
+/>

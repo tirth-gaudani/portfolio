@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-# Canonical Sitemap
-Sitemap: https://www.tirth-gaudani.ct.ws/sitemap-index.xml
-
-# Crawl-delay
-Crawl-delay: 1

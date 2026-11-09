@@ -1,89 +1,61 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig, packages } from '../data/siteConfig';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import { siteConfig, packages, pages } from "../data/siteConfig";
 
-const pageTitle = 'My Packages - Tirth Gaudani | NPM Packages';
-const pageDescription = `Explore ${siteConfig.name}'s open-source NPM packages built to boost developer productivity. Including image watermark, HTML to PDF, React components, and more.`;
-
-// Packages page structured data
-const packagesSchema = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "NPM Packages by Tirth Gaudani",
-  "description": pageDescription,
-  "url": `${siteConfig.url}/packages`,
-  "mainEntity": {
+const schema = {
+  "@type": ["WebPage", "CollectionPage"],
+  mainEntity: {
     "@type": "ItemList",
-    "itemListElement": packages.map((pkg, index) => ({
-      "@type": "SoftwareSourceCode",
-      "position": index + 1,
-      "name": pkg.name,
-      "description": pkg.description,
-      "url": pkg.url,
-      "programmingLanguage": "JavaScript",
-      "codeRepository": pkg.url
-    }))
-  }
+    itemListElement: packages.map((pkg, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "SoftwareSourceCode",
+        name: pkg.name,
+        description: pkg.description,
+        url: pkg.url,
+        programmingLanguage: "JavaScript",
+        author: { "@id": `${siteConfig.url}/#person` },
+      },
+    })),
+  },
 };
 ---
 
-<BaseLayout 
-  title={pageTitle} 
-  description={pageDescription}
-  structuredData={packagesSchema}
->
-  <main class="gridx-main page-full">
+<BaseLayout {...pages.packages} crumbs={[{ name: "Packages", path: "/packages/" }]} {schema}>
+  <main id="main" class="container">
+    <PageHero page={pages.packages} icon="npm" />
 
-    <!-- PAGE TITLE -->
-    <h1 class="page-title">
-      <span class="star-icon">✸</span>MY PACKAGES<span class="star-icon">✸</span>
-    </h1>
-
-    <p class="packages-subtitle">Explore my open-source NPM packages built to boost developer productivity.</p>
-
-    <!-- PACKAGES GRID -->
-    <section class="packages-grid" aria-label="NPM Packages">
-      {packages.map((pkg) => (
-        <a 
-          href={pkg.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="package-card"
-        >
-          <div class="package-icon" aria-hidden="true">npm</div>
-          <div class="package-info">
-            <h3>{pkg.name}</h3>
-            <p>{pkg.description}</p>
-          </div>
-        </a>
-      ))}
+    <section aria-labelledby="pkg-title">
+      <h2 id="pkg-title" class="sr-only">All packages</h2>
+      <ul class="pkg-grid">
+        {
+          packages.map((pkg) => (
+            <li>
+              <a href={pkg.url} target="_blank" rel="noopener noreferrer" class="package-card glass reveal" data-tilt>
+                <span class="big-icon"><Icon name="npm" size={26} /></span>
+                <span>
+                  <h3>{pkg.name}</h3>
+                  <p>{pkg.description}</p>
+                  <code>npm i {pkg.npm}</code>
+                </span>
+                <span class="arrow-btn" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </section>
-
   </main>
 </BaseLayout>
 
 <style>
-  .page-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
+  .pkg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 20px;
   }
-
-  .star-icon {
-    font-size: 0.6em;
-    color: var(--accent);
-    animation: spin 10s linear infinite;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+  .pkg-grid li, .pkg-grid a { height: 100%; }
 </style>

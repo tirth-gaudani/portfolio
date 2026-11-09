@@ -1,23 +1,17 @@
 ---
-import { siteConfig } from "../data/siteConfig";
-
-interface Props {
-  basePath?: string;
-}
-
-const { basePath = "" } = Astro.props;
-
-const normalizedBasePath = basePath ? basePath.replace(/\/$/, "") : "";
-
-const mapHref = (href: string) => {
-  if (!normalizedBasePath) return href;
-  if (href === "/") return `${normalizedBasePath}/`;
-  return `${normalizedBasePath}${href}`;
-};
+import Icon from "./Icon.astro";
+import { siteConfig, navigation } from "../data/siteConfig";
 ---
 
-<footer class="gridx-footer">
-  <p class="footer-copy">
-    © All rights reserved by <a href={mapHref("/")}>{siteConfig.name}</a>
-  </p>
+<footer class="site-footer container">
+  <div class="footer-bar glass">
+    <p class="footer-copy">© {new Date().getFullYear()} {siteConfig.name}</p>
+    <nav class="footer-nav" aria-label="Footer">
+      {[...navigation, { name: "Contact", href: "/contact/" }].map((l) => <a href={l.href}>{l.name}</a>)}
+    </nav>
+    <div class="socials">
+      <a href={siteConfig.social.linkedin} class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Icon name="linkedin" size={16} /></a>
+      <a href={siteConfig.social.github} class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" size={16} /></a>
+    </div>
+  </div>
 </footer>

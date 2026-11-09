@@ -1,132 +1,125 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { siteConfig, experience, education } from "../data/siteConfig";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import { siteConfig, experience, education, pages, period } from "../data/siteConfig";
 import { Image } from "astro:assets";
-import profileDark from "../assets/img/profile-dark.png";
-import profileLight from "../assets/img/profile-light.png";
-import profileOg from "../assets/img/profile-light.png";
 
-const pageTitle = `About - ${siteConfig.name} | ${siteConfig.profile.role}`;
-const pageDescription = `Learn about ${siteConfig.name}, a passionate MERN Stack Developer with expertise in React, Node.js, MongoDB, and Express.js. View experience, education, and skills.`;
-
-// About page structured data
-const aboutSchema = {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  name: `About ${siteConfig.name}`,
-  description: pageDescription,
-  mainEntity: {
-    "@type": "Person",
-    name: siteConfig.name,
-    jobTitle: siteConfig.profile.role,
-    description: siteConfig.profile.aboutSummary,
-    image: `${siteConfig.url}/img/profile-light.png`,
-    url: `${siteConfig.url}/about`,
-    sameAs: Object.values(siteConfig.social),
-  },
-};
+const { photo, stats } = siteConfig;
+const alt = `${siteConfig.name} — ${siteConfig.role}`;
+const timelines = [
+  { title: "Experience", items: experience },
+  { title: "Education", items: education.map((e) => ({ ...e, company: `${e.company}, ${e.city}` })) },
+];
 ---
 
-<BaseLayout
-  title={pageTitle}
-  description={pageDescription}
-  structuredData={aboutSchema}
-  ogImage={profileOg}
->
-  <main class="gridx-main page-full">
-    <!-- PAGE TITLE -->
-    <h1 class="page-title">
-      <span class="star-icon">✸</span> SELF-SUMMARY <span class="star-icon"
-        >✸</span
-      >
-    </h1>
+<BaseLayout {...pages.about} type="profile" crumbs={[{ name: "About", path: "/about/" }]} schema={{ "@type": ["WebPage", "AboutPage"], mainEntity: { "@id": `${siteConfig.url}/#person` } }}>
+  <main id="main" class="container">
+    <PageHero page={pages.about} />
 
-    <!-- ABOUT HERO -->
-    <section class="about-hero" aria-label="About Me">
-      <div class="about-image-card">
-        <div class="profile-img">
-          <Image
-            src={profileDark}
-            alt={`${siteConfig.name} - Full Stack Developer`}
-            width={320}
-            height={400}
-            loading="eager"
-            decoding="async"
-            class="logo-img--dark"
-          />
-          <Image
-            src={profileLight}
-            alt={`${siteConfig.name} - Full Stack Developer`}
-            width={320}
-            height={400}
-            loading="eager"
-            decoding="async"
-            class="logo-img--light"
-          />
-        </div>
+    <section class="about-intro" aria-label="About me">
+      <div class="about-photo glass" data-tilt>
+        <Image src={photo.dark} {alt} width={440} height={440} loading="eager" fetchpriority="high" class="only-dark" />
+        <Image src={photo.light} {alt} width={440} height={440} loading="lazy" class="only-light" />
       </div>
-
-      <div class="about-bio">
-        <h2 class="about-name">{siteConfig.name}</h2>
-        <p class="about-text">
-          {siteConfig.profile.aboutSummary}
-        </p>
+      <div class="about-copy glass">
+        <span class="chip"><Icon name="pin" size={12} /> {siteConfig.location}</span>
+        <h2>{siteConfig.name}</h2>
+        <p>{siteConfig.summary}</p>
+        <dl class="mini-stats">
+          <div><dt>Years</dt><dd>{stats.years}+</dd></div>
+          <div><dt>Projects</dt><dd>{stats.projects}+</dd></div>
+          <div><dt>Clients</dt><dd>{stats.clients}+</dd></div>
+        </dl>
+        <div class="hero-actions">
+          <a href={siteConfig.resume} class="btn btn-primary" target="_blank" rel="noopener noreferrer"><Icon name="download" size={18} /> Download CV</a>
+          <a href={siteConfig.social.linkedin} class="icon-btn glass" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Icon name="linkedin" size={18} /></a>
+          <a href={siteConfig.social.github} class="icon-btn glass" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" size={18} /></a>
+        </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE & EDUCATION -->
-    <section class="about-timeline" aria-label="Experience and Education">
-      <div class="timeline-col">
-        <h3 class="timeline-heading">EXPERIENCE</h3>
-        {
-          experience.map((item) => (
-            <div class="timeline-entry">
-              <span class="timeline-date">{item.date}</span>
-              <h4 class="timeline-title">{item.title}</h4>
-              <p class="timeline-company">{item.company}</p>
-            </div>
-          ))
-        }
-      </div>
+    <section class="section about-timelines" aria-label="Experience and education">
+      {
+        timelines.map((col) => (
+          <div>
+            <h2 class="col-title reveal">{col.title}</h2>
+            <ol class="timeline">
+              {col.items.map((item) => (
+                <li class="tl-item glass reveal">
+                  <i aria-hidden="true" />
+                  <span class="tl-date">{period(item)}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.company}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </section>
 
-      <div class="timeline-col">
-        <h3 class="timeline-heading">EDUCATION</h3>
+    <section class="section" aria-labelledby="stack-title">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow"><Icon name="sparkle" size={12} /> Expertise</span>
+          <h2 id="stack-title">My <span class="grad-text">tech stack</span></h2>
+        </div>
+      </div>
+      <ul class="tech-grid">
         {
-          education.map((item) => (
-            <div class="timeline-entry">
-              <span class="timeline-date">{item.date}</span>
-              <h4 class="timeline-title">{item.title}</h4>
-              <p class="timeline-company">{item.company}</p>
-            </div>
+          siteConfig.expertise.map((t) => (
+            <li class="tech glass reveal">
+              <img src={t.iconSrc} alt="" width="36" height="36" loading="lazy" decoding="async" />
+              {t.name}
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
   </main>
 </BaseLayout>
 
 <style>
-  .page-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
+  .about-intro {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 24px;
+    animation: rise 0.9s var(--ease) 0.1s both;
   }
-
-  .star-icon {
-    font-size: 0.6em;
-    color: var(--accent);
-    animation: spin 10s linear infinite;
+  .about-photo { padding: 10px; border-radius: var(--r-xl); }
+  .about-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center 20%;
+    border-radius: calc(var(--r-xl) - 8px);
   }
+  .about-copy {
+    padding: clamp(24px, 4vw, 44px);
+    border-radius: var(--r-xl);
+    display: grid;
+    align-content: center;
+    gap: 18px;
+  }
+  .about-copy h2 { font-size: clamp(30px, 4vw, 44px); }
+  .about-copy p { font-size: 17px; }
+  .mini-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 18px 0;
+    border-block: 1px solid var(--line);
+  }
+  .mini-stats div { display: flex; flex-direction: column-reverse; }
+  .mini-stats dd { font: 800 32px/1.1 var(--font-h); color: var(--text); }
+  .mini-stats dt { font-size: 13px; }
+  .about-timelines { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .col-title { font-size: 28px; margin-bottom: 24px; }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  @media (max-width: 860px) {
+    .about-intro, .about-timelines { grid-template-columns: 1fr; }
+    .about-photo { max-width: 420px; width: 100%; justify-self: center; }
   }
 </style>

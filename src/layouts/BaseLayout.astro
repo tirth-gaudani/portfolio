@@ -1,301 +1,207 @@
 ---
 import Header from "../components/Header.astro";
-import MobileMenu from "../components/MobileMenu.astro";
 import Footer from "../components/Footer.astro";
-import { siteConfig } from "../data/siteConfig";
-import "../styles/global.css";
-import { getImage } from "astro:assets";
+import { siteConfig, currentJob, education } from "../data/siteConfig";
+import { getImage, Font } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
-  canonicalURL?: string;
-  ogImage?: string | ImageMetadata;
-  ogImageAlt?: string;
-  ogType?: "website" | "article";
-  structuredData?: object;
-  forcedTheme?: "light" | "dark";
+  image?: ImageMetadata;
+  /** Site-relative URL of a pre-generated share image (e.g. a project's og.png). */
+  imageUrl?: string;
+  imageAlt?: string;
+  type?: "website" | "article" | "profile";
+  /** Page-specific schema.org node (merged into the site @graph). */
+  schema?: Record<string, unknown>;
+  /** Breadcrumb trail after "Home", e.g. [{ name: "Works", path: "/work/" }] */
+  crumbs?: { name: string; path: string }[];
+  noindex?: boolean;
 }
 
-const {
-  title,
-  description,
-  canonicalURL = Astro.url.href,
-  ogImage = "/img/profile-light.png",
-  ogImageAlt = title,
-  ogType = "website",
-  structuredData,
-  forcedTheme: forcedThemeProp,
-} = Astro.props;
+const { title, description, image, imageUrl, imageAlt = title, type = "website", schema, crumbs = [], noindex = false } = Astro.props;
 
-const currentPath = Astro.url.pathname;
-const forcedTheme =
-  forcedThemeProp ??
-  (currentPath.startsWith("/gridxlight") ? "light" : undefined);
-const showThemeToggle = !forcedTheme;
-const isGridxLight = currentPath.startsWith("/gridxlight");
-const isGridx = !isGridxLight && currentPath.startsWith("/gridx");
-const basePath = isGridxLight ? "/gridxlight" : isGridx ? "/gridx" : "";
-const navVariant = isGridxLight || isGridx ? "gridx" : "default";
-const fullTitle =
-  title === siteConfig.title ? title : `${title} | ${siteConfig.name}`;
+const site = siteConfig.url;
+const canonical = new URL(Astro.url.pathname, site).href;
+const abs = async (img: ImageMetadata, width: number) =>
+  new URL((await getImage({ src: img, width, format: "jpeg" })).src, site).href;
 
-let fullOgImage = "";
-if (typeof ogImage === "string") {
-  fullOgImage = ogImage.startsWith("http")
-    ? ogImage
-    : `${siteConfig.url}${ogImage}`;
-} else {
-  const image = await getImage({ src: ogImage, format: "webp" });
-  fullOgImage = `${siteConfig.url}${image.src}`;
-}
+const personImage = await abs(siteConfig.photo.light, 600);
+const ogImage = imageUrl ? new URL(imageUrl, site).href : image ? await abs(image, 1200) : personImage;
 
-// Default structured data (Person schema for developer portfolio)
-const defaultStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: siteConfig.name,
-  url: siteConfig.url,
-  image: `${siteConfig.url}/img/profile-light.png`,
-  sameAs: [siteConfig.social.linkedin, siteConfig.social.github],
-  jobTitle: siteConfig.profile.role,
-  worksFor: {
-    "@type": "Organization",
-    name: "Smartway Technoway Pvt. Ltd.",
+const personId = `${site}/#person`;
+const graph = [
+  {
+    "@type": "Person",
+    "@id": personId,
+    name: siteConfig.name,
+    url: site,
+    image: personImage,
+    jobTitle: siteConfig.role,
+    description: siteConfig.summary,
+    sameAs: Object.values(siteConfig.social),
+    worksFor: { "@type": "Organization", name: currentJob.company },
+    alumniOf: education.map((e) => ({ "@type": "CollegeOrUniversity", name: e.company, address: e.city })),
+    knowsAbout: siteConfig.expertise.map((e) => e.name),
+    address: { "@type": "PostalAddress", ...siteConfig.contact.address },
   },
-  alumniOf: [
-    {
-      "@type": "CollegeOrUniversity",
-      name: "Shree Swaminarayan Institute of Technology",
-      address: "Gandhinagar",
-    },
-    {
-      "@type": "CollegeOrUniversity",
-      name: "Bholabhai Patel College of Computer Studies",
-      address: "Gandhinagar",
-    },
-  ],
-  knowsAbout: [
-    "React",
-    "Node.js",
-    "MongoDB",
-    "Express.js",
-    "JavaScript",
-    "TypeScript",
-    "Full Stack Development",
-  ],
-  address: {
-    "@type": "PostalAddress",
-    ...siteConfig.contact.address,
-  },
-};
-
-const jsonLd = structuredData || defaultStructuredData;
+  { "@type": "WebSite", "@id": `${site}/#website`, url: site, name: siteConfig.name, inLanguage: siteConfig.lang, publisher: { "@id": personId } },
+  { "@type": "WebPage", "@id": canonical, url: canonical, name: title, description, isPartOf: { "@id": `${site}/#website` }, about: { "@id": personId }, ...schema },
+  ...(crumbs.length
+    ? [{
+        "@type": "BreadcrumbList",
+        itemListElement: [{ name: "Home", path: "/" }, ...crumbs].map((c, i) => ({
+          "@type": "ListItem", position: i + 1, name: c.name, item: new URL(c.path, site).href,
+        })),
+      }]
+    : []),
+];
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  class={forcedTheme === "light" ? "" : "dark"}
-  data-forced-theme={forcedTheme}
->
+<html lang={siteConfig.lang} class="dark">
   <head>
-    <!-- Essential Meta Tags -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>
-      (function () {
-        try {
-          const forcedTheme =
-            document.documentElement.getAttribute("data-forced-theme");
-          if (forcedTheme === "light") {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            return;
-          }
-          if (forcedTheme === "dark") {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            return;
-          }
-          const savedTheme = localStorage.getItem("theme");
-          if (savedTheme === "light") {
-            document.documentElement.classList.remove("dark");
-          }
-        } catch (_) {}
-      })();
+      try { if (localStorage.getItem("theme") === "light") document.documentElement.classList.remove("dark"); } catch (_) {}
     </script>
 
-    <!-- Primary Meta Tags for SEO -->
-    <title>{fullTitle}</title>
-    <meta name="title" content={fullTitle} />
+    <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={siteConfig.keywords.join(", ")} />
-    <meta name="author" content={siteConfig.author} />
-    <meta
-      name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    />
-    <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href={canonicalURL} />
+    <meta name="author" content={siteConfig.name} />
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
+    <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={ogType} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={fullTitle} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={fullOgImage} />
-    <meta property="og:image:alt" content={ogImageAlt} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:locale" content={siteConfig.locale} />
     <meta property="og:site_name" content={siteConfig.name} />
-
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={fullOgImage} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:creator" content={siteConfig.twitter} />
 
-    <!-- Theme and PWA -->
     <meta name="theme-color" content={siteConfig.themeColor} />
-    <meta name="msapplication-TileColor" content={siteConfig.themeColor} />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content={siteConfig.name} />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/img/favicon.png" />
-    <link rel="apple-touch-icon" href="/img/favicon.png" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/32.png" />
+    <link rel="apple-touch-icon" href="/icons/180.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-
-    <!-- Preconnect for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Fonts - Preload critical fonts -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
-
-    <!-- Font Awesome - Deferred loading -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      />
-    </noscript>
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-    <!-- Generator Meta -->
     <meta name="generator" content={Astro.generator} />
-    <meta
-      name="6a97888e-site-verification"
-      content="19f4407f8249fd4d119d29bc62e94453"
-    />
+    <meta name="6a97888e-site-verification" content="19f4407f8249fd4d119d29bc62e94453" />
+
+    <Font cssVariable="--font-sora" preload />
+    <Font cssVariable="--font-inter" preload />
+
+    <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph })} />
   </head>
   <body>
-    <Header
-      currentPath={currentPath}
-      showThemeToggle={showThemeToggle}
-      basePath={basePath}
-      navVariant={navVariant}
-    />
-    <MobileMenu
-      currentPath={currentPath}
-      basePath={basePath}
-      navVariant={navVariant}
-    />
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <div class="scene" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+      <span class="grid-floor"></span>
+    </div>
+
+    <Header currentPath={Astro.url.pathname} />
     <slot />
+    <Footer />
 
-    <Footer basePath={basePath} />
+    <script>
+      const root = document.documentElement;
+      const $ = (id: string) => document.getElementById(id)!;
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    <!-- Theme and Mobile Menu Script - Inlined for performance -->
-    <script is:inline>
-      // Theme Toggle
-      (function () {
-        const themeToggle = document.getElementById("themeToggle");
-        const icon = document.getElementById("themeIcon");
+      /* Theme toggle — circular reveal where supported */
+      const themeBtn = $("themeToggle");
+      const syncTheme = () => themeBtn.setAttribute("aria-pressed", String(!root.classList.contains("dark")));
+      syncTheme();
+      themeBtn.addEventListener("click", () => {
+        const apply = () => {
+          const dark = root.classList.toggle("dark");
+          try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+          syncTheme();
+        };
+        if (!document.startViewTransition || reduce) return apply();
+        const r = themeBtn.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.classList.add("theming");
+        const t = document.startViewTransition(apply);
+        t.ready.then(() =>
+          root.animate(
+            { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+            { duration: 600, easing: "cubic-bezier(.2,.8,.2,1)", pseudoElement: "::view-transition-new(root)" },
+          ),
+        ).catch(() => {});
+        t.finished.finally(() => root.classList.remove("theming"));
+      });
 
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "light") {
-          document.documentElement.classList.remove("dark");
-          if (icon) icon.className = "fas fa-sun";
-        }
+      /* Mobile menu */
+      const menu = $("mobileMenu"), menuBtn = $("menuBtn");
+      const setMenu = (open: boolean) => {
+        menu.classList.toggle("open", open);
+        menu.inert = !open;
+        menuBtn.setAttribute("aria-expanded", String(open));
+        document.body.style.overflow = open ? "hidden" : "";
+        (open ? $("menuClose") : menuBtn).focus();
+      };
+      menu.inert = true;
+      menuBtn.addEventListener("click", () => setMenu(true));
+      menu.addEventListener("click", (e) => (e.target as Element).closest("#menuClose, a") && setMenu(false));
+      addEventListener("keydown", (e) => e.key === "Escape" && menu.classList.contains("open") && setMenu(false));
+      matchMedia("(min-width: 901px)").addEventListener("change", (e) => e.matches && menu.classList.contains("open") && setMenu(false));
 
-        if (themeToggle && icon) {
-          themeToggle.addEventListener("click", function () {
-            const isDark = document.documentElement.classList.toggle("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-            icon.className = isDark ? "fas fa-moon" : "fas fa-sun";
-          });
-        }
+      /* Pointer glare on glass + 3D tilt on [data-tilt] (mouse only) */
+      if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document.addEventListener("pointermove", (e) => {
+          const el = (e.target as Element).closest?.<HTMLElement>(".glass");
+          if (!el) return;
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          el.style.setProperty("--mx", `${px * 100}%`);
+          el.style.setProperty("--my", `${py * 100}%`);
+          if (!reduce && el.hasAttribute("data-tilt")) {
+            el.style.setProperty("--rx", `${(0.5 - py) * 10}deg`);
+            el.style.setProperty("--ry", `${(px - 0.5) * 12}deg`);
+          }
+        }, { passive: true });
+        document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((el) =>
+          el.addEventListener("pointerleave", () => {
+            el.style.removeProperty("--rx");
+            el.style.removeProperty("--ry");
+          }),
+        );
+      }
 
-        // Mobile Menu
-        const mobileBtn = document.getElementById("mobileBtn");
-        const mobileMenu = document.getElementById("mobileMenu");
-        const mobileClose = document.getElementById("mobileClose");
-
-        if (mobileBtn && mobileMenu && mobileClose) {
-          mobileBtn.addEventListener("click", function () {
-            mobileMenu.classList.add("active");
-            mobileBtn.setAttribute("aria-expanded", "true");
-            document.body.style.overflow = "hidden";
-          });
-
-          mobileClose.addEventListener("click", function () {
-            mobileMenu.classList.remove("active");
-            mobileBtn.setAttribute("aria-expanded", "false");
-            document.body.style.overflow = "";
-          });
-
-          document.querySelectorAll(".mobile-link").forEach(function (link) {
-            link.addEventListener("click", function () {
-              mobileMenu.classList.remove("active");
-              mobileBtn.setAttribute("aria-expanded", "false");
-              document.body.style.overflow = "";
-            });
-          });
-        }
-      })();
+      /* Count-up numbers */
+      if (!reduce) {
+        const io = new IntersectionObserver((entries) => entries.forEach(({ isIntersecting, target }) => {
+          if (!isIntersecting) return;
+          io.unobserve(target);
+          const el = target as HTMLElement, to = Number(el.dataset.count), t0 = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min(1, (now - t0) / 1400);
+            el.textContent = String(Math.round(to * (1 - (1 - p) ** 4))).padStart(el.dataset.pad ? 2 : 1, "0");
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }), { threshold: 0.4 });
+        document.querySelectorAll("[data-count]").forEach((c) => io.observe(c));
+      }
     </script>
   </body>
 </html>

@@ -1,71 +1,46 @@
 ---
-import { navigation, navigationGridx } from '../data/siteConfig';
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import logoLight from "../assets/img/tg-logo-light.png";
+import logoDark from "../assets/img/tg-logo-dark.png";
+import { navigation, siteConfig } from "../data/siteConfig";
 
-interface Props {
-  currentPath: string;
-  showThemeToggle?: boolean;
-  basePath?: string;
-  navVariant?: 'default' | 'gridx';
-}
-
-const { currentPath, showThemeToggle = true, basePath = '', navVariant = 'default' } = Astro.props;
-
-const normalizedCurrentPath = currentPath.length > 1 ? currentPath.replace(/\/$/, '') : currentPath;
-const normalizedBasePath = basePath ? basePath.replace(/\/$/, '') : '';
-
-const mapHref = (href: string) => {
-  if (navVariant === 'gridx') {
-    if (href === '/about') href = '/about-page';
-  }
-
-  if (!normalizedBasePath) return href;
-  if (href === '/') return `${normalizedBasePath}/`;
-  return `${normalizedBasePath}${href}`;
-};
-
-const isActive = (href: string) => {
-  const target = mapHref(href);
-  const normalizedTarget = target.length > 1 ? target.replace(/\/$/, '') : target;
-  if (normalizedCurrentPath === normalizedTarget) return true;
-  if (navVariant === 'default' && href === '/about' && normalizedCurrentPath === '/about-page') return true;
-  if (navVariant === 'default' && href === '/work' && normalizedCurrentPath === '/portfolio') return true;
-  return false;
-};
+const trim = (p: string) => p.replace(/\/$/, "") || "/";
+const path = trim(Astro.props.currentPath);
+const isActive = (href: string) => (href === "/" ? path === "/" : path === trim(href) || path.startsWith(href));
+const links = [...navigation, { name: "Contact", href: "/contact/" }];
 ---
 
-<header class="gridx-header">
-  <div class="header-container">
-    <a href={mapHref('/')} class="header-logo" aria-label="Home">
-      <span class="logo-mark" aria-hidden="true">
-        <img class="logo-img logo-img--light" src="/img/tg-logo-light.png" alt="" width="44" height="44" loading="eager" decoding="async" />
-        <img class="logo-img logo-img--dark" src="/img/tg-logo-dark.png" alt="" width="44" height="44" loading="eager" decoding="async" />
-      </span>
-      <span class="logo-text">Tirth Gaudani</span>
+<header class="site-header" id="siteHeader">
+  <div class="nav-shell glass">
+    <a href="/" class="brand" aria-label={`${siteConfig.name} — Home`}>
+      <Image class="only-light" src={logoLight} alt="" width={40} loading="eager" />
+      <Image class="only-dark" src={logoDark} alt="" width={40} loading="eager" />
+      <span>{siteConfig.name}</span>
     </a>
 
-    <nav class="header-nav" aria-label="Main navigation">
-      {(navVariant === 'gridx' ? navigationGridx : navigation).map((link) => (
-        <a 
-          href={mapHref(link.href)} 
-          class:list={['nav-link', { active: isActive(link.href) }]}
-        >
-          {link.name}
-        </a>
-      ))}
+    <nav class="nav" aria-label="Main">
+      {navigation.map((l) => <a href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>{l.name}</a>)}
     </nav>
 
-    <div class="header-right">
-      {showThemeToggle && (
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <i class="fas fa-moon" id="themeIcon"></i>
-        </button>
-      )}
+    <div class="nav-actions">
+      <button class="icon-btn glass" id="themeToggle" type="button" aria-label="Light theme" aria-pressed="false">
+        <Icon name="sun" class="only-dark" />
+        <Icon name="moon" class="only-light" />
+      </button>
+      <a href="/contact/" class="btn btn-primary btn-sm hide-sm">Hire me</a>
+      <button class="icon-btn glass menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <Icon name="menu" />
+      </button>
     </div>
-
-    <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </div>
 </header>
+
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu">
+  <button class="icon-btn glass menu-close" id="menuClose" type="button" aria-label="Close menu">
+    <Icon name="close" />
+  </button>
+  <nav aria-label="Mobile">
+    {links.map((l, i) => <a href={l.href} style={`--i:${i}`} aria-current={isActive(l.href) ? "page" : undefined}>{l.name}</a>)}
+  </nav>
+</div>

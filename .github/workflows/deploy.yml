@@ -11,6 +11,10 @@ on:
   # Allows you to run this workflow manually from GitHub
   workflow_dispatch:
 
+  # Rebuild on the 1st of every month so "years of experience" stays current
+  schedule:
+    - cron: "0 3 1 * *"
+
 # Sets permissions for the workflow
 permissions:
   contents: read

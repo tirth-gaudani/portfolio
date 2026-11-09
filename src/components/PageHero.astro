@@ -1,0 +1,16 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  page: { eyebrow: string; heading: string; highlight: string; intro?: string };
+  icon?: "sparkle" | "npm" | "dot";
+}
+const { page, icon = "sparkle" } = Astro.props;
+---
+
+<header class="page-hero">
+  <span class="eyebrow">{icon === "dot" ? <span class="dot" /> : <Icon name={icon} size={12} />} {page.eyebrow}</span>
+  <h1>{page.heading} <span class="grad-text">{page.highlight}</span></h1>
+  {page.intro && <p>{page.intro}</p>}
+  <slot />
+</header>

@@ -1,73 +1,77 @@
-// Site Configuration - Centralized data for SEO and content
-import type { ImageMetadata } from 'astro';
-import trailverseCard from '../assets/img/trailverse-card.png';
-import trailverseHero from '../assets/img/trailverse-hero.png';
-import clothingCard from '../assets/img/clothing-card.png';
-import clothingHero from '../assets/img/clothing-hero.png';
-import vpnCard from '../assets/img/vpn-card.png';
-import vpnHero from '../assets/img/vpn-hero.png';
-import onlineShopCard from '../assets/img/online-shop-card.png';
-import onlineShopHero from '../assets/img/online-shop-hero.png';
-import foodOrderCard from '../assets/img/food-order-card.png';
-import foodOrderHero from '../assets/img/food-order-hero.png';
-import studentWorksheetCard from '../assets/img/student-worksheet-card.png';
+/* ==========================================================================
+   SINGLE SOURCE OF TRUTH
+   Every page, SEO tag, schema, manifest and robots.txt reads from this file.
+   Edit content here — never hard-code it in a page.
+   ========================================================================== */
+import profileDark from '../assets/img/profile-dark.png';
+import profileLight from '../assets/img/profile-light.png';
+
+/* ---------- Date helpers ("2022-06" = June 2022, "2019" = year only) ---------- */
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmt = (d: string | null) => {
+    if (!d) return 'Present';
+    const [y, m] = d.split('-');
+    return m ? `${MONTHS[Number(m) - 1]} ${y}` : y;
+};
+export const period = (item: { start: string; end: string | null }) => `${fmt(item.start)} – ${fmt(item.end)}`;
+const yearsSince = (d: string) => Math.floor((Date.now() - new Date(`${d.length === 4 ? `${d}-01` : d}-01`).getTime()) / 31_557_600_000);
+
+/* ---------- Career (newest first) — years of experience is calculated from this ---------- */
+export const experience = [
+    { title: 'Senior MERN Stack Developer', company: 'Smartway Technoway Pvt. Ltd.', start: '2025-11', end: null },
+    { title: 'Senior MERN Stack Developer', company: 'Nyusoft Solutions LLP', start: '2024-09', end: '2025-10' },
+    { title: 'Full Stack Developer', company: 'Hyperlink InfoSystem', start: '2022-06', end: '2024-08' },
+];
+
+export const education = [
+    { title: 'Master of Computer Application (MCA)', company: 'Shree Swaminarayan Institute of Technology', city: 'Gandhinagar', start: '2022', end: '2024' },
+    { title: 'Bachelor of Computer Application (BCA)', company: 'Bholabhai Patel College of Computer Studies', city: 'Gandhinagar', start: '2019', end: '2022' },
+];
+
+const careerStart = experience[experience.length - 1].start;
+const years = yearsSince(careerStart);
+export const currentJob = experience.find((e) => !e.end) ?? experience[0];
+
+/* ---------- Site & person ---------- */
 export const siteConfig = {
     name: 'Tirth Gaudani',
-    title: 'Tirth Gaudani - Top Rated MERN Stack Developer in India',
-    description: 'Hire Tirth Gaudani, an expert Full Stack MERN Developer. Specializing in high-performance React, Node.js, and MongoDB web applications. Available for freelance & full-time projects in Ahmedabad, Gujarat, India.',
     url: 'https://www.tirth-gaudani.ct.ws',
-    author: 'Tirth Gaudani',
+    lang: 'en',
     locale: 'en_US',
-    logo: 'Tirth Gaudani',
-    themeColor: '#7b68ee',
+    themeColor: '#05050b',
     twitter: '@tirthgaudani',
-    profile: {
-        role: 'MERN Stack Developer',
-        location: 'Ahmedabad, Gujarat',
-        aboutSummary: 'I am a Full Stack MERN Developer based in Ahmedabad, Gujarat. I build fast, scalable, and user-friendly web applications with React, Node.js, MongoDB, and Express.js.',
-    },
-    contact: {
-        emails: [] as string[],
-        phones: [] as string[],
-        locationLines: ['Ahmedabad, Gujarat', 'India'] as string[],
-        address: {
-            addressLocality: 'Ahmedabad',
-            addressRegion: 'Gujarat',
-            addressCountry: 'India',
-        },
-    },
-    // HIGH TRAFFIC KEYWORDS FOR INDEXING
-    keywords: [
-        'Tirth Gaudani',
-        'MERN Stack Developer',
-        'Full Stack Developer India',
-        'Hire React Developer',
-        'Node.js Expert',
-        'MongoDB Specialist',
-        'Web Developer Ahmedabad',
-        'Best Freelance Web Developer',
-        'JavaScript Expert',
-        'Frontend Developer',
-        'Backend Developer',
-        'Custom Web Application Development',
-        'Responsive Website Design',
-        'NPM Package Creator',
-        'Software Engineer Gujarat',
-        'Portfolio Website',
-        'React.js',
-        'Express.js',
-        'Next.js Developer',
-        'Top Rated Developer'
-    ],
+    role: 'MERN Stack Developer',
+    roles: ['MERN Stack Developer', 'Backend Engineer', 'Open-source Author'],
+    location: 'Ahmedabad, Gujarat',
+    summary: 'I am a Full Stack MERN Developer based in Ahmedabad, Gujarat. I build fast, scalable, and user-friendly web applications with React, Node.js, MongoDB, and Express.js.',
+    available: true,
+    availability: 'Available for freelance & full-time',
+    resume: 'https://drive.google.com/uc?export=download&id=1YK_fuFtL8g7-JYsbf0Z0SORF7iskGhfB',
+    photo: { dark: profileDark, light: profileLight },
+    /** Source for every generated icon (header logo, favicon, touch icon, manifest). */
+    logo: 'src/assets/img/tg-logo-dark.png',
     social: {
-        linkedin: 'https://linkedin.com/in/tirthgaudani',
+        linkedin: 'https://www.linkedin.com/in/tirthgaudani',
         github: 'https://github.com/tirth-gaudani',
     },
-    experience: {
-        years: 3,
-        clients: 13,
-        projects: 13,
+    contact: {
+        /** Public email — enables the contact form (opens the visitor's mail app). */
+        email: '',
+        /** Optional form backend (Formspree / Web3Forms URL). Sends messages directly when set. */
+        formEndpoint: '',
+        /** Web3Forms only: public access key. */
+        formAccessKey: '',
+        address: { addressLocality: 'Ahmedabad', addressRegion: 'Gujarat', addressCountry: 'IN' },
+        locationText: 'Ahmedabad, Gujarat, India',
     },
+    stats: { years, clients: 13, projects: 13 },
+    careerStart,
+    keywords: [
+        'Tirth Gaudani', 'MERN Stack Developer', 'Full Stack Developer India', 'Hire React Developer',
+        'Node.js Developer', 'MongoDB', 'Web Developer Ahmedabad', 'Freelance Web Developer',
+        'JavaScript Developer', 'Backend Developer', 'NPM Package Author', 'Next.js Developer',
+    ],
+    ribbon: ['MERN Stack', 'React.js', 'Node.js', 'Next.js', 'TypeScript', 'REST APIs', 'Socket.io', 'PostgreSQL'],
     expertise: [
         { name: 'React.js', iconSrc: '/img/react-js.svg' },
         { name: 'Node.js', iconSrc: '/img/node.js.svg' },
@@ -83,230 +87,136 @@ export const siteConfig = {
     ],
 };
 
+/* ---------- Navigation ---------- */
 export const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Works', href: '/work' },
-    { name: 'My Packages', href: '/packages' },
+    { name: 'About', href: '/about/' },
+    { name: 'Works', href: '/work/' },
+    { name: 'Packages', href: '/packages/' },
 ];
 
-export const navigationGridx = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Works', href: '/work' },
-];
+/* ---------- Projects ---------- */
+/** `art` picks the illustration layout, `colors` its two accent colours (see src/lib/art.ts). */
+export type Project = {
+    title: string; slug: string; category: string; art: 'booking' | 'chat' | 'vpn' | 'shop' | 'food' | 'canvas';
+    colors: [string, string]; link: string; description: string; technologies: string[]; features: string[];
+};
 
-export const mobileNavigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Works', href: '/work' },
-    { name: 'My Packages', href: '/packages' },
-];
-
-export const mobileNavigationGridx = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Works', href: '/work' },
-    { name: 'My Packages', href: '/packages' },
-];
-
-export const projects = [
+export const projects: Project[] = [
     {
         title: 'TrailVerse',
         slug: 'trailverse',
-        category: 'FULL STACK DEVELOPMENT',
-        image: trailverseCard,
-        heroImage: trailverseHero,
+        category: 'Full Stack Development',
+        art: 'booking',
+        colors: ['#10b981', '#0ea5e9'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%)',
-        large: true,
         description: 'A smart adventure and experience booking platform. Users can explore, filter, and book curated outdoor activities. Includes a role-based system for organizers to manage listings and an admin dashboard.',
         technologies: ['Next.js', 'PostgreSQL', 'Express', 'Node.js'],
-        features: [
-            'Curated adventure listings',
-            'Role-based access control (Admin/Organizer)',
-            'Real-time booking management',
-            'SEO-friendly Next.js frontend',
-            'Optimized RESTful APIs'
-        ]
+        features: ['Curated adventure listings', 'Role-based access control (Admin/Organizer)', 'Real-time booking management', 'SEO-friendly Next.js frontend', 'Optimized RESTful APIs'],
     },
     {
         title: 'Clothing Purchase App',
         slug: 'clothing-purchase-app',
-        category: 'BACK-END DEVELOPER',
-        image: clothingCard,
-        heroImage: clothingHero,
+        category: 'Back-end Development',
+        art: 'chat',
+        colors: ['#ec4899', '#8b5cf6'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #fff5f5 0%, #fed7e2 100%)',
         description: 'A comprehensive e-commerce solution for clothing vendors. Features a robust backend for handling high traffic, a React.js admin portal, and real-time chat between vendors and users.',
         technologies: ['Node.js', 'Express', 'MySQL', 'React.js', 'Socket.io'],
-        features: [
-            'Scalable Admin & Vendor portals',
-            'Real-time chat with Socket.io',
-            'Optimized RESTful APIs',
-            'Inventory and Order management',
-            'Cross-platform mobile support'
-        ]
+        features: ['Scalable Admin & Vendor portals', 'Real-time chat with Socket.io', 'Optimized RESTful APIs', 'Inventory and Order management', 'Cross-platform mobile support'],
     },
     {
         title: 'VPN Application',
         slug: 'vpn-application',
-        category: 'WEB DESIGN',
-        image: vpnCard,
-        heroImage: vpnHero,
+        category: 'Web Design',
+        art: 'vpn',
+        colors: ['#22d3ee', '#6366f1'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%)',
         description: 'A secure and fast VPN application designed to protect user privacy and bypass geo-restrictions. Features a modern, intuitive interface with real-time connection stats.',
         technologies: ['React', 'Electron', 'Node.js', 'OpenVPN'],
-        features: [
-            'Military-grade encryption',
-            'No-logs policy',
-            'Kill switch functionality',
-            'Multi-platform support',
-            'Split tunneling'
-        ]
+        features: ['Military-grade encryption', 'No-logs policy', 'Kill switch functionality', 'Multi-platform support', 'Split tunneling'],
     },
     {
         title: 'Online Purchase App',
         slug: 'online-purchase-app',
-        category: 'BACK-END DEVELOPER',
-        image: onlineShopCard,
-        heroImage: onlineShopHero,
+        category: 'Back-end Development',
+        art: 'shop',
+        colors: ['#3b82f6', '#a855f7'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%)',
         description: 'A futuristic e-commerce platform with automated product data scraping and intelligent delivery tracking. Features a high-tech UI with holographic elements and secure crypto payment options.',
         technologies: ['Node.js', 'Express', 'MySQL', 'CI/CD'],
-        features: [
-            'Amazon product data scraping',
-            'Scheduled jobs & Notifications',
-            'Text Local SMS integration',
-            'Product delivery tracking system',
-            'High-performance database design'
-        ]
+        features: ['Amazon product data scraping', 'Scheduled jobs & Notifications', 'Text Local SMS integration', 'Product delivery tracking system', 'High-performance database design'],
     },
     {
         title: 'Food Order System',
         slug: 'food-order-system',
-        category: 'WEB & MOBILE APP',
-        image: foodOrderCard,
-        heroImage: foodOrderHero,
+        category: 'Web & Mobile App',
+        art: 'food',
+        colors: ['#f97316', '#facc15'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #fff5e6 0%, #ffe0b3 100%)',
         description: 'A complete food ordering solution for school lunches. Features a student ordering portal, a teacher management panel, and a vendor dashboard for seamless lunch operations.',
         technologies: ['Node.js', 'Express', 'MySQL', 'React.js'],
-        features: [
-            'Student lunch ordering portal',
-            'Teacher management panel',
-            'Vendor dashboard',
-            'Seamless data synchronization',
-            'Efficient order processing'
-        ]
+        features: ['Student lunch ordering portal', 'Teacher management panel', 'Vendor dashboard', 'Seamless data synchronization', 'Efficient order processing'],
     },
     {
         title: 'Student Worksheet',
         slug: 'student-worksheet',
-        category: 'FULL STACK DEVELOPMENT',
-        image: studentWorksheetCard,
-        heroImage: studentWorksheetCard,
+        category: 'Full Stack Development',
+        art: 'canvas',
+        colors: ['#a3e635', '#22d3ee'],
         link: 'https://github.com/tirth-gaudani',
-        gradient: 'linear-gradient(135deg, #e6f7ff 0%, #b3e0ff 100%)',
         description: 'An interactive web application for creating educational worksheets. Features a "Canva-like" drag-and-drop interface for teachers to design custom worksheets with text, images, and drawings.',
         technologies: ['Node.js', 'Express', 'MySQL', 'React.js'],
-        features: [
-            'Drag-and-drop worksheet builder',
-            'Canvas drawing capabilities',
-            'Teacher resource panel',
-            'Image and text manipulation',
-            'RESTful API integration'
-        ]
-    }
+        features: ['Drag-and-drop worksheet builder', 'Canvas drawing capabilities', 'Teacher resource panel', 'Image and text manipulation', 'RESTful API integration'],
+    },
 ];
 
+/* ---------- npm packages ---------- */
 export const packages = [
-    {
-        name: 'Images Watermark',
-        description: 'Add watermarks to images using a simple Node.js utility.',
-        url: 'https://www.npmjs.com/package/images-watermark',
-    },
-    {
-        name: 'HTML to PDF',
-        description: 'Convert HTML to high-quality PDF documents using Node.js.',
-        url: 'https://www.npmjs.com/package/html-to-pdf',
-    },
-    {
-        name: 'Letter Avatar Image',
-        description: 'Generate avatars with initials as images dynamically.',
-        url: 'https://www.npmjs.com/package/letter-avatar-image',
-    },
-    {
-        name: 'React Maintenance',
-        description: 'Add a maintenance screen in your React applications easily.',
-        url: 'https://www.npmjs.com/package/react-maintenance',
-    },
-    {
-        name: 'Node API Documentation',
-        description: 'Automatically generate API documentation for Node.js backends.',
-        url: 'https://www.npmjs.com/package/node-api-documentation',
-    },
-    {
-        name: 'Check Disposable Email',
-        description: 'Validate if an email is from a disposable provider.',
-        url: 'https://www.npmjs.com/package/check-disposable-email',
-    },
-    {
-        name: 'Postman Runtime Collection',
-        description: 'Run Postman collections programmatically inside Node.js.',
-        url: 'https://www.npmjs.com/package/postman-runtime-collection',
-    },
-    {
-        name: 'Node Prisma Structure',
-        description: 'Scaffold Prisma-based backend projects in Node.js efficiently.',
-        url: 'https://www.npmjs.com/package/node-prisma-structure',
-    },
-    {
-        name: 'Generate Node Structure',
-        description: 'Generate Node.js project structure with ease.',
-        url: 'https://www.npmjs.com/package/generate-node-structure',
-    },
-    {
-        name: 'React Video Player',
-        description: 'Feature-rich video player component for React applications.',
-        url: 'https://www.npmjs.com/package/react-video-player',
-    },
-    {
-        name: 'React Network Logger',
-        description: 'A lightweight network logger for React.js and Next.js apps.',
-        url: 'https://www.npmjs.com/package/react-network-logger',
-    },
-];
+    { name: 'Images Watermark', npm: 'images-watermark', description: 'Add watermarks to images using a simple Node.js utility.' },
+    { name: 'HTML to PDF', npm: 'html-to-pdf', description: 'Convert HTML to high-quality PDF documents using Node.js.' },
+    { name: 'Letter Avatar Image', npm: 'letter-avatar-image', description: 'Generate avatars with initials as images dynamically.' },
+    { name: 'React Maintenance', npm: 'react-maintenance', description: 'Add a maintenance screen in your React applications easily.' },
+    { name: 'Node API Documentation', npm: 'node-api-documentation', description: 'Automatically generate API documentation for Node.js backends.' },
+    { name: 'Check Disposable Email', npm: 'check-disposable-email', description: 'Validate if an email is from a disposable provider.' },
+    { name: 'Postman Runtime Collection', npm: 'postman-runtime-collection', description: 'Run Postman collections programmatically inside Node.js.' },
+    { name: 'Node Prisma Structure', npm: 'node-prisma-structure', description: 'Scaffold Prisma-based backend projects in Node.js efficiently.' },
+    { name: 'Generate Node Structure', npm: 'generate-node-structure', description: 'Generate Node.js project structure with ease.' },
+    { name: 'React Video Player', npm: 'react-video-player', description: 'Feature-rich video player component for React applications.' },
+    { name: 'React Network Logger', npm: 'react-network-logger', description: 'A lightweight network logger for React.js and Next.js apps.' },
+].map((p) => ({ ...p, url: `https://www.npmjs.com/package/${p.npm}` }));
 
-export const experience = [
-    {
-        date: 'Jun 2022 - Aug 2024',
-        title: 'Full Stack Developer',
-        company: 'Hyperlink InfoSystem',
+/* ---------- Page SEO + headings (title ≤ 60 chars, description ≤ 160 chars) ---------- */
+export const pages = {
+    home: {
+        title: `${siteConfig.name} — ${siteConfig.role} in India`,
+        description: `${siteConfig.name} is a ${siteConfig.role} with ${years}+ years of experience building fast, scalable React, Node.js and MongoDB web apps. Based in ${siteConfig.location}.`,
     },
-    {
-        date: 'Sep 2024 - Oct 2025',
-        title: 'Senior MERN Stack Developer',
-        company: 'Nyusoft Solutions LLP',
+    about: {
+        title: `About ${siteConfig.name} — ${siteConfig.role}`,
+        description: `Experience, education and tech stack of ${siteConfig.name}, a ${siteConfig.role} with ${years}+ years building React, Node.js and MongoDB applications.`,
+        eyebrow: 'Self-summary', heading: "Hello, I'm", highlight: 'Tirth.',
     },
-    {
-        date: 'November 2025 - Present',
-        title: 'Senior MERN Stack Developer',
-        company: 'Smartway Technoway Pvt. Ltd.',
+    work: {
+        title: `Projects & Case Studies — ${siteConfig.name}`,
+        description: `Explore web and full-stack projects by ${siteConfig.name}: e-commerce, booking platforms, real-time apps and dashboards built with React, Node.js and SQL.`,
+        eyebrow: 'Selected works', heading: 'Projects that', highlight: 'ship.',
+        intro: 'A collection of products solving real-world problems with clean code and thoughtful design.',
     },
-];
-
-export const education = [
-    {
-        date: '2019 - 2022',
-        title: 'Bachelor of Computer Application (BCA)',
-        company: 'Bholabhai Patel College of Computer Studies, Gandhinagar',
+    packages: {
+        title: `Open-source npm Packages — ${siteConfig.name}`,
+        description: `Open-source npm packages by ${siteConfig.name} for Node.js and React: image watermarking, HTML to PDF, API docs, network logging and more.`,
+        eyebrow: 'Open source', heading: 'My', highlight: 'packages.',
+        intro: `${packages.length} open-source npm packages built to boost developer productivity.`,
     },
-    {
-        date: '2022 - 2024',
-        title: 'Master of Computer Application (MCA)',
-        company: 'Shree Swaminarayan Institute of Technology, Gandhinagar',
+    contact: {
+        title: `Contact ${siteConfig.name} — Hire a MERN Developer`,
+        description: `Get in touch with ${siteConfig.name} for freelance projects, full-time roles and collaborations in React, Node.js and full-stack development.`,
+        eyebrow: 'Usually replies within a day', heading: "Let's work", highlight: 'together.',
+        intro: "Tell me about your product, idea or role. I'd love to hear what you're building.",
     },
-];
+    notFound: {
+        title: `Page not found — ${siteConfig.name}`,
+        description: 'The page you are looking for could not be found. Return to the homepage to explore the portfolio.',
+    },
+};

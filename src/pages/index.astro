@@ -1,383 +1,130 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CardArrow from "../components/CardArrow.astro";
-import { siteConfig } from "../data/siteConfig";
+import ProjectCard from "../components/ProjectCard.astro";
+import Icon from "../components/Icon.astro";
+import { siteConfig, projects, packages, currentJob, pages } from "../data/siteConfig";
 import { Image } from "astro:assets";
-import profileDark from "../assets/img/profile-dark.png";
-import profileLight from "../assets/img/profile-light.png";
-import myWorksCollage from "../assets/img/my-works-collage.png";
-import profileOg from "../assets/img/profile-light.png";
 
-const pageDescription = `${siteConfig.name} is a passionate ${siteConfig.profile.role} with ${siteConfig.experience.years}+ years of experience. Specializing in React, Node.js, MongoDB, and Express.js development. Based in ${siteConfig.profile.location}.`;
-
-const nameParts = siteConfig.name.split(" ");
-const firstName = nameParts[0] ?? siteConfig.name;
-const lastName = nameParts.slice(1).join(" ");
-
-// Homepage specific structured data
-const homepageSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  mainEntity: {
-    "@type": "Person",
-    name: siteConfig.name,
-    url: siteConfig.url,
-    image: `${siteConfig.url}/img/profile-light.png`,
-    sameAs: Object.values(siteConfig.social),
-    jobTitle: siteConfig.profile.role,
-    description: pageDescription,
-  },
-};
+const { stats, photo, expertise, roles, ribbon } = siteConfig;
+const [firstName, ...rest] = siteConfig.name.split(" ");
+const alt = `${siteConfig.name} — ${siteConfig.role}`;
 ---
 
-<BaseLayout
-  title={siteConfig.title}
-  description={pageDescription}
-  structuredData={homepageSchema}
-  ogImage={profileOg}
->
-  <main class="gridx-main">
-    <div class="bento-grid">
-      <!-- PROFILE CARD -->
-      <div
-        class="bento-card profile-card"
-        onclick="window.location.href='/about'"
-        role="button"
-        tabindex="0"
-        onkeypress="if(event.key === 'Enter') window.location.href='/about'"
-        aria-label="Go to About Page"
-        onkeydown="if(event.key === 'Enter' || event.key === ' ') window.location.href='/about'"
-      >
-        <div class="profile-img">
-          <div class="profile-img">
-            <Image
-              src={profileDark}
-              alt={`${siteConfig.name} - MERN Stack Developer`}
-              width={300}
-              height={300}
-              loading="eager"
-              decoding="async"
-              class="logo-img--dark"
-            />
-            <Image
-              src={profileLight}
-              alt={`${siteConfig.name} - MERN Stack Developer`}
-              width={300}
-              height={300}
-              loading="eager"
-              decoding="async"
-              class="logo-img--light"
-            />
-          </div>
-        </div>
-        <div class="profile-content">
-          <span class="profile-label"
-            >A {siteConfig.profile.role.toUpperCase()}</span
-          >
-          <h1 class="profile-name">
-            {firstName}{lastName ? <br /> : null}{lastName}{lastName ? "." : ""}
-          </h1>
-          <p class="profile-desc">
-            I am a {siteConfig.profile.role} based in {
-              siteConfig.profile.location
-            }.
-          </p>
-        </div>
-
-        <div class="profile-actions">
-          <a
-            href="https://drive.google.com/uc?export=download&id=1YK_fuFtL8g7-JYsbf0Z0SORF7iskGhfB"
-            id="download-btn"
-            class="download-btn"
-            onclick="event.stopPropagation()"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Download Resume"
-            title="Download Resume"
-          >
-            <span class="btn-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                ></path>
-              </svg>
-            </span>
-            <span class="btn-text">Download CV</span>
-          </a>
-          <script is:inline>
-            (() => {
-              const btn = document.getElementById("download-btn");
-              if (!btn) return;
-
-              const btnText = btn.querySelector(".btn-text");
-              const btnIcon = btn.querySelector(".btn-icon");
-              const originalText = btnText.innerText;
-              const originalIcon = btnIcon.innerHTML;
-
-              btn.addEventListener("click", () => {
-                if (btn.classList.contains("downloading")) return;
-
-                btn.classList.add("downloading");
-                btnText.innerText = "Downloading...";
-                btnIcon.innerHTML = `<svg class="animate-spin" style="animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle style="opacity: 0.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity: 0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
-
-                // Simulate download process visual feedback
-                setTimeout(() => {
-                  btn.classList.remove("downloading");
-                  btn.classList.add("success");
-                  btnText.innerText = "Downloaded!";
-                  btnIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9.135-12.375" /></svg>`;
-
-                  // Reset after success message
-                  setTimeout(() => {
-                    btn.classList.remove("success");
-                    btnText.innerText = originalText;
-                    btnIcon.innerHTML = originalIcon;
-                  }, 3000);
-                }, 2500);
-              });
-            })();
-          </script>
-          <CardArrow />
-        </div>
-      </div>
-
-      <!-- MARQUEE -->
-      <div class="bento-marquee">
-        <div class="marquee-track">
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-          <span
-            >LATEST WORK AND <b>FEATURED</b> <span class="star">★</span></span
-          >
-        </div>
-      </div>
-
-      <!-- STATS CARD -->
-      <div class="bento-card stats-card">
-        <div class="stat-item">
-          <span
-            class="stat-number"
-            data-count={siteConfig.experience.years}
-            data-prefix="0">0{siteConfig.experience.years}</span
-          >
-          <span class="stat-label">YEARS<br />EXPERIENCE</span>
-        </div>
-        <div class="stat-item">
-          <span
-            class="stat-number"
-            data-count={siteConfig.experience.clients}
-            data-prefix="+">+{siteConfig.experience.clients}</span
-          >
-          <span class="stat-label">CLIENTS<br />WORLDWIDE</span>
-        </div>
-        <div class="stat-item">
-          <span
-            class="stat-number"
-            data-count={siteConfig.experience.projects}
-            data-prefix="+">+{siteConfig.experience.projects}</span
-          >
-          <span class="stat-label">TOTAL<br />PROJECTS</span>
-        </div>
-      </div>
-
-      <script is:inline>
-        (() => {
-          const reduceMotion =
-            window.matchMedia &&
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-          if (reduceMotion) return;
-
-          const card = document.querySelector(".stats-card");
-          if (!card) return;
-
-          const numbers = Array.from(card.querySelectorAll(".stat-number"));
-          if (numbers.length === 0) return;
-
-          const animateNumber = (el) => {
-            const targetRaw = el.getAttribute("data-count");
-            const prefix = el.getAttribute("data-prefix") || "";
-            const format = el.getAttribute("data-format") || "";
-
-            const target = Number(targetRaw);
-            if (!Number.isFinite(target)) return;
-
-            const duration = 1200;
-            const start = performance.now();
-            const from = 0;
-
-            const formatValue = (value) => {
-              if (format === "pad2") return String(value).padStart(2, "0");
-              return String(value);
-            };
-
-            const tick = (now) => {
-              const t = Math.min(1, (now - start) / duration);
-              const eased = 1 - Math.pow(1 - t, 3);
-              const current = Math.round(from + (target - from) * eased);
-              el.textContent = `${prefix}${formatValue(current)}`;
-              if (t < 1) requestAnimationFrame(tick);
-            };
-
-            requestAnimationFrame(tick);
-          };
-
-          const io = new IntersectionObserver(
-            (entries) => {
-              for (const entry of entries) {
-                if (!entry.isIntersecting) continue;
-                numbers.forEach(animateNumber);
-                io.disconnect();
-                break;
-              }
-            },
-            { threshold: 0.35 },
-          );
-
-          io.observe(card);
-        })();
-      </script>
-
-      <!-- PROJECTS CARD -->
-      <a href="/work" class="bento-card projects-card">
-        <div class="projects-inner">
-          <div class="project-preview">
-            <Image
-              src={myWorksCollage}
-              alt="My Works Showcase"
-              width={600}
-              height={400}
-              loading="lazy"
-              decoding="async"
-              class="showcase-img"
-              style={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              }}
-            />
-          </div>
-          <div class="project-info">
-            <div class="card-bottom">
-              <span class="card-label">SHOWCASE</span>
-              <h3 class="card-title">Projects</h3>
-            </div>
-            <CardArrow />
-          </div>
-        </div>
-      </a>
-
-      <!-- NPM PACKAGES CARD -->
-      <a href="/packages" class="bento-card gfonts-card">
-        <div class="gfonts-icon">
-          <i class="fab fa-npm" aria-hidden="true"></i>
-        </div>
-        <div class="card-bottom">
-          <span class="card-label">NPM</span>
-          <h3 class="card-title">Packages</h3>
-        </div>
-        <CardArrow />
-      </a>
-
-      <!-- PROFILES CARD -->
-      <div class="bento-card profiles-card">
-        <div class="profiles-icons">
-          <a
-            href={siteConfig.social.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="profile-icon"
-            aria-label="LinkedIn"
-          >
-            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-          </a>
-          <a
-            href={siteConfig.social.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="profile-icon"
-            aria-label="GitHub"
-          >
-            <i class="fab fa-github" aria-hidden="true"></i>
+<BaseLayout {...pages.home} type="profile" schema={{ "@type": ["WebPage", "ProfilePage"], mainEntity: { "@id": `${siteConfig.url}/#person` } }}>
+  <main id="main">
+    <section class="container hero" aria-label="Introduction">
+      <div class="hero-copy">
+        {siteConfig.available && <span class="chip"><span class="dot"></span> {siteConfig.availability}</span>}
+        <h1>{firstName}<br /><span class="grad-text">{rest.join(" ")}.</span></h1>
+        <p class="role">
+          <span>I'm a</span>
+          <span class="sr-only">{roles[0]}</span>
+          <span class="words" aria-hidden="true">
+            <span>{[...roles, roles[0]].map((r) => <span>{r}</span>)}</span>
+          </span>
+        </p>
+        <p class="hero-desc">{siteConfig.summary}</p>
+        <div class="hero-actions">
+          <a href="/work/" class="btn btn-primary">View my work <Icon name="arrow" size={18} /></a>
+          <a href={siteConfig.resume} class="btn glass" target="_blank" rel="noopener noreferrer">
+            <Icon name="download" size={18} /> Download CV
           </a>
         </div>
-        <div class="card-bottom">
-          <span class="card-label">STAY WITH ME</span>
-          <h3 class="card-title">Profiles</h3>
-        </div>
-        <CardArrow />
       </div>
 
-      <!-- EXPERTISE CARD -->
-      <div class="bento-card expertise-card">
-        <div class="expertise-grid" role="list" aria-label="Expertise">
+      <div class="stage-wrap">
+        <div class="stage">
+          <span class="orb orb-1" aria-hidden="true"></span>
+          <span class="orb orb-2" aria-hidden="true"></span>
+
           {
-            siteConfig.expertise.map((item) => (
-              <div
-                class="expertise-item"
-                role="listitem"
-                title={item.name}
-                aria-label={item.name}
-              >
-                <span class="expertise-icon" aria-hidden="true">
-                  <img
-                    class="expertise-img"
-                    src={item.iconSrc}
-                    alt=""
-                    width="30"
-                    height="30"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </span>
-                <span class="expertise-name">{item.name}</span>
+            ["back", "front"].map((layer) => (
+              <div class={`orbit-layer orbit-${layer}`} aria-hidden="true">
+                <div class="orbit" style={`--n:${expertise.length}`}>
+                  {expertise.map((t, i) => (
+                    <span class="orbit-item" style={`--i:${i}`}>
+                      <span><img src={t.iconSrc} alt="" width="24" height="24" loading="lazy" decoding="async" /></span>
+                    </span>
+                  ))}
+                </div>
               </div>
             ))
           }
-        </div>
-        <div class="card-bottom">
-          <span class="card-label">EXPERTISE</span>
-          <h3 class="card-title">Tech Stack</h3>
+
+          <div class="portrait glass" data-tilt>
+            <div class="portrait-inner">
+              <Image src={photo.dark} {alt} width={440} height={440} loading="eager" fetchpriority="high" class="only-dark" />
+              <Image src={photo.light} {alt} width={440} height={440} loading="lazy" class="only-light" />
+            </div>
+          </div>
+
+          <div class="badge glass badge-a">
+            <span class="badge-ico"><Icon name="sparkle" size={16} /></span>
+            <span><strong>{stats.years}+ years</strong>Experience</span>
+          </div>
+          <div class="badge glass badge-b">
+            <span class="badge-ico"><Icon name="npm" size={16} /></span>
+            <span><strong>{packages.length} packages</strong>on npm</span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- CTA CARD -->
-      <!-- <a href="/contact" class="bento-card cta-card">
-        <h3 class="cta-text">Let's<br />work <span>together.</span></h3>
-        <CardArrow />
-      </a> -->
+    <div class="ribbon glass" aria-hidden="true">
+      <div class="ribbon-track">
+        {[0, 1].map(() => ribbon.map((w) => <span>{w}<Icon name="sparkle" size={22} /></span>))}
+      </div>
     </div>
+
+    <section class="container section" aria-labelledby="glance-title">
+      <h2 id="glance-title" class="sr-only">At a glance</h2>
+      <div class="bento">
+        <div class="tile glass stat reveal">
+          <span class="tile-label">Years of experience</span>
+          <span class="stat-num"><span data-count={stats.years} data-pad="2">{String(stats.years).padStart(2, "0")}</span><sup>+</sup></span>
+        </div>
+        <div class="tile glass stat reveal">
+          <span class="tile-label">Projects delivered</span>
+          <span class="stat-num"><span data-count={stats.projects}>{stats.projects}</span><sup>+</sup></span>
+        </div>
+        <a href="/about/" class="tile glass span-2 reveal" data-tilt>
+          <span class="tile-label">Currently</span>
+          <h3>{currentJob.title}</h3>
+          <p>@ {currentJob.company} — building scalable products end-to-end with React, Node.js and modern databases.</p>
+          <span class="link-arrow tile-foot">More about me <Icon name="arrow" size={16} /></span>
+        </a>
+
+        <a href="/packages/" class="tile glass span-2 reveal" data-tilt>
+          <span class="big-icon"><Icon name="npm" size={34} /></span>
+          <div class="tile-foot">
+            <span class="tile-label">Open source</span>
+            <h3>{packages.length} npm packages for developers</h3>
+          </div>
+          <span class="arrow-btn" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+        </a>
+        <div class="tile glass stat reveal">
+          <span class="tile-label">Happy clients</span>
+          <span class="stat-num"><span data-count={stats.clients}>{stats.clients}</span><sup>+</sup></span>
+        </div>
+        <a href="/contact/" class="tile glass cta-tile reveal" data-tilt>
+          <span class="tile-label">Let's talk</span>
+          <h3 class="tile-foot">Work<br />together.</h3>
+          <span class="arrow-btn" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="container section" aria-labelledby="work-title">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow"><Icon name="sparkle" size={12} /> Selected work</span>
+          <h2 id="work-title">Things I've <span class="grad-text">built</span></h2>
+        </div>
+        <a href="/work/" class="link-arrow">View all projects <Icon name="arrow" size={16} /></a>
+      </div>
+      <div class="projects-grid">
+        {projects.slice(0, 3).map((p, i) => <ProjectCard project={p} index={i} />)}
+      </div>
+    </section>
   </main>
 </BaseLayout>
-<style>
-  .star {
-    animation: spin 10s linear infinite;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>
